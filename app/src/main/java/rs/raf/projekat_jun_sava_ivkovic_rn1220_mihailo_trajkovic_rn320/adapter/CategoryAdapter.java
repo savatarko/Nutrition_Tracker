@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,37 +35,36 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return new CategoryViewHolder(view);
     }
 
+
+
+
+
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categories.get(position);
         holder.name.setText(category.getName());
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        HttpURLConnection con = (HttpURLConnection) new URL(category.getUrl()).openConnection();
-                        con.connect();
-                        InputStream input = con.getInputStream();
-                        Bitmap bm = BitmapFactory.decodeStream(input);
-                        Drawable d = new BitmapDrawable(bm);
-                        holder.itemView.setBackgroundDrawable(d);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection con = (HttpURLConnection) new URL(category.getUrl()).openConnection();
+                    con.connect();
+                    InputStream input = con.getInputStream();
+                    final Bitmap bm = BitmapFactory.decodeStream(input);
 
-                        /*
-                        Bitmap img = BitmapFactory.decodeStream(getClass().getResourceAsStream(category.getUrl()));
-                        BitmapDrawable bg = new BitmapDrawable(img);
-                        holder.button.setBackgroundDrawable(bg);
-
-
-                         */
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
+                    holder.itemView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Drawable d = new BitmapDrawable(holder.itemView.getResources(), bm);
+                            holder.itemView.setBackgroundDrawable(d);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-
-        //holder.itemView.setBackgroundDrawable(bg);
+            }
+        }).start();
     }
 
     @Override

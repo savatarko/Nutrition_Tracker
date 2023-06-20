@@ -86,21 +86,6 @@ public class SplashActivity extends AppCompatActivity {
                     return;
                 }
                 List<CategoryJSON> categories = null;
-                /*
-                try {
-                    Gson g = new Gson();
-                    JSONObject tmp = g.fromJson(response.body(), JSONObject.class);
-                    JSONArray jsonArray = tmp.getJSONArray("categories");
-                    for(int i = 0;i<jsonArray.length();i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        CategoryJSON category = new CategoryJSON(jsonObject.getString("idCategory"), jsonObject.getString("strCategory"), jsonObject.getString("strCategoryThumb"), jsonObject.getString("strCategoryDescription"));
-                        categories.add(category);
-                    }
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-                 */
                 AppDatabase db = AppDatabase.getInstance(getApplicationContext());
                 db.categoryDao().deleteAll();
                 categories = response.body().getCategories();
