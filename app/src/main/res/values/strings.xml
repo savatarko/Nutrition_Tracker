@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320</string>
+    <string name="Title">Nutrition Tracker</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
+    <string name="empty_field">All fields must be filled.</string>
+    <string name="wrong_pass_format">Password has to be at least 4 characters, have at least 1 digit and i uppercase, and cant contain special characters.</string>
+    <string name="wrong_pass">"Wrong password."</string>
+    <string name="account_not_found">Wrong username or password.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="placeholder">placeholder</string>
+    <string name="search_meals">Search meals</string>
+</resources>
