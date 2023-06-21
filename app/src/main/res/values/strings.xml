@@ -16,4 +16,16 @@
     <string name="ok">ok</string>
     <string name="save">Save</string>
     <string name="back">Back</string>
+    <string name="sort">sort</string>
+    <string name="min_cal">min cal</string>
+    <string name="max_cal">max cal</string>
+    <string name="breakfast">breakfast</string>
+    <string name="lunch">lunch</string>
+    <string name="dinner">dinner</string>
+    <string name="snack">snack</string>
+    <string name="cancel">cancel</string>
+    <string name="startcamera">Open camera?</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="allow">allow</string>
 </resources>

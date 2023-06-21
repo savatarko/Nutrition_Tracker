@@ -2,6 +2,7 @@ package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class MealDetailsActivity extends AppCompatActivity {
     private TextView tags;
     private ImageView mealImage;
     private Button backbt;
+    private Button savebt;
 
     private int mealid;
     //private Meal meal;
@@ -50,6 +52,7 @@ public class MealDetailsActivity extends AppCompatActivity {
         tags = findViewById(R.id.textView10);
         mealImage = findViewById(R.id.imageView2);
         backbt = findViewById(R.id.button5);
+        savebt = findViewById(R.id.button2);
 
         AppDatabase db = AppDatabase.getInstance(this);
         Meal meal = db.mealDao().getById(mealid);
@@ -75,6 +78,12 @@ public class MealDetailsActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        savebt.setOnClickListener(e->{
+            Intent intent = new Intent(this, SaveMealActivity.class);
+            intent.putExtra("mealid", mealid);
+            startActivity(intent);
+        });
 
         backbt.setOnClickListener(e->{
             finish();

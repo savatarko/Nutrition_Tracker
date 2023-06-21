@@ -14,8 +14,42 @@
         android:id ="@+id/mealSearchView"
         android:iconifiedByDefault="false"
         android:queryHint="@string/search_meals"
-        />
+        >
 
+    </androidx.appcompat.widget.SearchView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/calorieLowerBound"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:hint="@string/min_cal"
+            />
+
+        <EditText
+            android:id="@+id/calorieUpperBound"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/max_cal"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/sort" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

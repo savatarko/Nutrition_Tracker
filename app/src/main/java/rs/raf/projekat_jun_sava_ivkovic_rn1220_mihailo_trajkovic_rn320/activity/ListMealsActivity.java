@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ListMealsActivity extends AppCompatActivity {
     private MealAdapter mealAdapter;
     private String category;
     private String searchfilter;
+    private Button sortbt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,11 @@ public class ListMealsActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        sortbt = findViewById(R.id.button3);
+        sortbt.setOnClickListener(e->{
+            mealAdapter.setMeals(new ArrayList<>());
+        });
     }
     private void loadData(){
         Retrofit retrofit = new Retrofit.Builder()
@@ -100,7 +107,7 @@ public class ListMealsActivity extends AppCompatActivity {
                 db.mealDao().deleteAll();
                 mealJSONList = response.body().getMeals();
                 for (MealJSON mealJSON : mealJSONList) {
-                    Meal meal = new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), new ArrayList<>(), new ArrayList<>(), mealJSON.getMealarea());//TODO:sastojci
+                    Meal meal = new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), new ArrayList<>(), new ArrayList<>(), mealJSON.getMealarea(), mealJSON.getVideolink());//TODO:sastojci
                     if (category == null || meal.category.equals(category)) {
                         if(searchfilter==null || meal.name.toLowerCase().contains(searchfilter.toLowerCase()))
                         {
@@ -116,8 +123,9 @@ public class ListMealsActivity extends AppCompatActivity {
             }
         });
 
-        List<Meal> meals = mealViewModel.getMealRepository().getAllByCategory(category);
-        mealAdapter.setMeals(meals);
+        //List<Meal> meals = mealViewModel.getMealRepository().getAllByCategory(category);
+        //meals.remove(0);
+        //mealAdapter.setMeals(meals);
     }
 
 

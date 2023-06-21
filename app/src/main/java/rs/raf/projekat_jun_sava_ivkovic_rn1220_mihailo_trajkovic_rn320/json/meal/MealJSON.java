@@ -30,18 +30,28 @@ public class MealJSON {
     @SerializedName("strInstructions")
     private String instructions;
 
+    @SerializedName("strYoutube")
+    private String videolink;
 
-    private Map<String, String> ingredients;
+    /*
+    @SerializedName("strIngredient1")
+    private List<String> ingredients;
+
+    @SerializedName("strMeasure1")
+    private List<String> measures;
+
+     */
 
 
-    // Generate getters and setters for the fields
+    //private Map<String, String> ingredients;
 
-    public Map<String, String> getIngredients() {
-        return ingredients;
+
+    public String getVideolink() {
+        return videolink;
     }
 
-    public void setIngredients(Map<String, String> ingredients) {
-        this.ingredients = ingredients;
+    public void setVideolink(String videolink) {
+        this.videolink = videolink;
     }
 
     public class MealJSONWrapper{

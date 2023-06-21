@@ -5,14 +5,28 @@
     android:id="@+id/MealItem"
     android:layout_height="100dp">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/placeholder"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="left|center"
-        android:layout_marginLeft="50dp"
-        />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:padding="5dp"
+            android:text="@string/placeholder" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:padding="5dp"
+            android:text="" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView"

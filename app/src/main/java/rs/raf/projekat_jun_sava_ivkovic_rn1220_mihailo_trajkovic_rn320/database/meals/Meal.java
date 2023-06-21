@@ -39,6 +39,9 @@ public class Meal {
     @ColumnInfo(name = "measures")
     public List<String> measures;
 
+    @ColumnInfo(name = "videolink")
+    public String videolink;
+
     public static class MealConverter{
         @TypeConverter
         public String fromList(List<String> list) {
@@ -54,7 +57,7 @@ public class Meal {
         }
     }
 
-    public Meal(int id, String name, String thumbnail, String category, String tags, String instructions, List<String> ingredients, List<String> measures, String mealArea) {
+    public Meal(int id, String name, String thumbnail, String category, String tags, String instructions, List<String> ingredients, List<String> measures, String mealArea, String videolink) {
         this.id=id;
         this.name = name;
         this.thumbnail = thumbnail;
