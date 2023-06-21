@@ -4,16 +4,21 @@ import android.content.Context;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.category.CategoryDao;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.category.Category;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.MealDao;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.User;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.UserDao;
 
-@androidx.room.Database(entities = {User.class, Category.class}, version = 3)
+@androidx.room.Database(entities = {User.class, Category.class, Meal.class}, version = 8)
+@TypeConverters({Meal.MealConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract CategoryDao categoryDao();
+    public abstract MealDao mealDao();
 
     private static AppDatabase instance;
 

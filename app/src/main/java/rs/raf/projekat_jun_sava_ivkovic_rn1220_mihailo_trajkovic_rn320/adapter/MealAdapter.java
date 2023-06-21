@@ -1,0 +1,103 @@
+package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity.ListMealsActivity;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity.MealDetailsActivity;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
+
+public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder>{
+
+    private List<Meal> meals = new ArrayList<>();
+
+    @NonNull
+    @Override
+    public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_item, parent, false);
+        return new MealViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+        Meal meal = meals.get(position);
+        holder.name.setText(meal.name);
+        //holder.img.setImageBitmap(meal.img);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    HttpURLConnection con = (HttpURLConnection) new URL(meal.thumbnail).openConnection();
+                    con.connect();
+                    InputStream input = con.getInputStream();
+                    final Bitmap bm = BitmapFactory.decodeStream(input);
+                    holder.img.setImageBitmap(bm);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
+        holder.frameLayout.setOnClickListener(e->{
+            Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
+            intent.putExtra("mealid", meal.id);
+            holder.itemView.getContext().startActivity(intent);
+        });
+
+
+
+
+    }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
+        notifyDataSetChanged();
+    }
+
+    public void setMealsNoNotif(List<Meal> meals) {
+        this.meals = meals;
+    }
+
+    @Override
+    public int getItemCount() {
+        return meals.size();
+    }
+
+
+
+    class MealViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView name;
+        private ImageView img;
+        private FrameLayout frameLayout;
+
+
+        public MealViewHolder(@NonNull View itemView) {
+            super(itemView);
+            name = itemView.findViewById(R.id.textView2);
+            img = itemView.findViewById(R.id.imageView);
+            frameLayout = itemView.findViewById(R.id.MealItem);
+        }
+    }
+}

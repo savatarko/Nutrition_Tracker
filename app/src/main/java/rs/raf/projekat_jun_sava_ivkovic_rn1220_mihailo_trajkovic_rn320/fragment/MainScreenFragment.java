@@ -1,5 +1,6 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity.ListMealsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter.CategoryAdapter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.CategoryViewModel;
 
@@ -92,6 +94,22 @@ public class MainScreenFragment extends Fragment {
         categoryViewModel.getCategories().observe(getViewLifecycleOwner(), categories -> {
             categoryAdapter.setCategories(categories);
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query){
+                Intent intent = new Intent(getContext(), ListMealsActivity.class);
+                intent.putExtra("filter", query);
+                getContext().startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText){
+                return true;
+            }
+        });
+
     }
 
 

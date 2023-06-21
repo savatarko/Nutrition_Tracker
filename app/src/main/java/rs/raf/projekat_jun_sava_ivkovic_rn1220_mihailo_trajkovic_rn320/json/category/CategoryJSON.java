@@ -1,4 +1,4 @@
-package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json;
+package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.category;
 
 import java.util.List;
 
