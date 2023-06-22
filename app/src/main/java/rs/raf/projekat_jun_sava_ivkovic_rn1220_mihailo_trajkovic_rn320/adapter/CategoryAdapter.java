@@ -7,15 +7,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,8 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
-import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity.ListMealsActivity;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.ListMealsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.category.Category;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealFilter;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
@@ -90,7 +88,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         holder.frame.setOnClickListener(e->{
             Intent intent = new Intent(holder.itemView.getContext(), ListMealsActivity.class);
-            intent.putExtra("category", category.getName());
+            //intent.putExtra("category", category.getName());
+            MealFilter mealFilter = new MealFilter();
+            mealFilter.setCategory(category.getName());
+            intent.putExtra("filter", mealFilter);
             holder.itemView.getContext().startActivity(intent);
 
         });

@@ -20,16 +20,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".activity.SaveMealActivity"
+            android:name=".gui.activity.SaveMealActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MealDetailsActivity"
+            android:name=".gui.activity.MealDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.ListMealsActivity"
+            android:name=".gui.activity.ListMealsActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".gui.activity.SplashActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,10 +38,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".gui.activity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".gui.activity.MainActivity"
             android:exported="false" />
     </application>
 

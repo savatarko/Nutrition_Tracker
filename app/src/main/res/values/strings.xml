@@ -28,4 +28,18 @@
     <string name="yes">yes</string>
     <string name="no">no</string>
     <string name="allow">allow</string>
+    <string name="category">Category</string>
+    <string name="area">Area</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="filter">filter</string>
+    <string name="show_sorted">Show sorted</string>
+    <string name="pagination">pagination</string>
+    <string name="tags">Tags</string>
+    <string name="meal_name">Meal name</string>
+    <string name="show">Show</string>
+    <string-array name="spinner">
+        <item>Category</item>
+        <item>Area</item>
+        <item>Ingredient</item>
+    </string-array>
 </resources>

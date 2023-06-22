@@ -1,4 +1,4 @@
-package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.fragment;
+package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,15 +11,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
-import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity.ListMealsActivity;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.ListMealsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter.CategoryAdapter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.CategoryViewModel;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealFilter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,11 +97,19 @@ public class MainScreenFragment extends Fragment {
             categoryAdapter.setCategories(categories);
         });
 
+
+        Log.d("test1",Integer.toString(((CategoryAdapter)recyclerView.getAdapter()).getItemCount()));
+
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query){
                 Intent intent = new Intent(getContext(), ListMealsActivity.class);
-                intent.putExtra("filter", query);
+                MealFilter mealFilter = new MealFilter();
+                mealFilter.setMealName(query);
+                mealFilter.setFromHome(true);
+                intent.putExtra("filter", mealFilter);
                 getContext().startActivity(intent);
                 return true;
             }

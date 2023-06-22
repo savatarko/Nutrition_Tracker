@@ -1,4 +1,4 @@
-package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.activity;
+package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
