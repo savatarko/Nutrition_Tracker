@@ -71,4 +71,13 @@ public class Meal {
 
     public Meal() {
     }
+
+
+    public String getIngredientsMeasuresString(){
+        String s = "";
+        for (int i = 0; i < this.ingredients.size(); i++) {
+            s += this.ingredients.get(i) + "  -  " + this.measures.get(i) + "\n";
+        }
+        return s;
+    }
 }

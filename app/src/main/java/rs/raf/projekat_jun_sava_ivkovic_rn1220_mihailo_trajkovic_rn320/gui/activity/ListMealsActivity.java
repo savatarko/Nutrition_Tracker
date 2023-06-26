@@ -112,7 +112,8 @@ public class ListMealsActivity extends AppCompatActivity {
                 db.mealDao().deleteAll();
                 mealJSONList = response.body().getMeals();
                 for (MealJSON mealJSON : mealJSONList) {
-                    Meal meal = new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), new ArrayList<>(), new ArrayList<>(), mealJSON.getMealarea(), mealJSON.getVideolink());//TODO:sastojci
+                    Log.d("TEST", "onResponse: " + mealJSON.getIngredients());
+                    Meal meal = new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), mealJSON.getIngredients(), mealJSON.getMeasures(), mealJSON.getMealarea(), mealJSON.getVideolink());
                     if(mealFilter.isFromHome()==true){
                         if(meal.name.toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || meal.ingredients.contains(mealFilter.getIngredient())){//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
                             db.mealDao().insert(meal);

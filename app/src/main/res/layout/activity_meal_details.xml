@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealDetailsViewModel"/>
+    </data>
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".gui.activity.MealDetailsActivity">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,19 +43,19 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/tvMealName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/placeholder" />
+                    android:text="@{viewmodel.meal.name}" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/tvMealCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/tvMealArea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="TextView" />
@@ -54,19 +64,19 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tvMealRecipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/tvVideo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/tvmealIngredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
@@ -75,8 +85,9 @@
             android:id="@+id/textView10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@{viewmodel.meal.ingredientsMeasuresString}" />
     </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -99,5 +110,5 @@
             android:layout_margin="10dp"
             android:text="@string/back" />
     </LinearLayout>
-
 </FrameLayout>
+</layout>

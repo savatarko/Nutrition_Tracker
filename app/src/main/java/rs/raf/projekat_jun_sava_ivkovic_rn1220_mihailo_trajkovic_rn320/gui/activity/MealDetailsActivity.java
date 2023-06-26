@@ -1,6 +1,8 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,10 +15,14 @@ import android.widget.TextView;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealDetailsViewModel;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MyViewModelFactory;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.databinding.ActivityMealDetailsBinding;
 
 public class MealDetailsActivity extends AppCompatActivity {
 
@@ -34,6 +40,8 @@ public class MealDetailsActivity extends AppCompatActivity {
     private int mealid;
     //private Meal meal;
 
+    private MealDetailsViewModel mealDetailsViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +51,21 @@ public class MealDetailsActivity extends AppCompatActivity {
         initView();
     }
     private void initView(){
-        mealName = findViewById(R.id.textView4);
-        mealCategory = findViewById(R.id.textView5);
-        mealArea = findViewById(R.id.textView6);
-        mealRecipe = findViewById(R.id.textView7);
-        video = findViewById(R.id.textView8);
-        mealIngredients = findViewById(R.id.textView9);
+
+        mealDetailsViewModel = new ViewModelProvider(this, new MyViewModelFactory(this.getApplication(), mealid)).get(MealDetailsViewModel.class);
+
+        ActivityMealDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_meal_details);
+        binding.setViewmodel(mealDetailsViewModel);
+
+        binding.setLifecycleOwner(this);
+
+
+//        mealName = findViewById(R.id.tvMealName);
+        mealCategory = findViewById(R.id.tvMealCategory);
+        mealArea = findViewById(R.id.tvMealArea);
+        mealRecipe = findViewById(R.id.tvMealRecipe);
+        video = findViewById(R.id.tvVideo);
+        mealIngredients = findViewById(R.id.tvmealIngredients);
         tags = findViewById(R.id.textView10);
         mealImage = findViewById(R.id.imageView2);
         backbt = findViewById(R.id.button5);
@@ -56,7 +73,7 @@ public class MealDetailsActivity extends AppCompatActivity {
 
         AppDatabase db = AppDatabase.getInstance(this);
         Meal meal = db.mealDao().getById(mealid);
-        mealName.setText(meal.name);
+        //mealName.setText(meal.name);
         mealCategory.setText(meal.category);
         mealArea.setText(meal.mealArea);
         mealRecipe.setText(meal.instructions);
@@ -89,4 +106,6 @@ public class MealDetailsActivity extends AppCompatActivity {
             finish();
         });
     }
+
+
 }

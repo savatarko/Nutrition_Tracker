@@ -31,4 +31,8 @@ public class MealRepository {
     public List<Meal> getAllList(){
         return mealDao.getAllList();
     }
+
+    public Meal getById(int id){
+        return mealDao.getById(id);
+    }
 }
