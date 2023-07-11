@@ -43,6 +43,10 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
         SavedMeal meal = meals.get(position);
         holder.name.setText(meal.name);
         //holder.img.setImageBitmap(meal.img);
+        String cal = meal.calories + " kcal";
+        holder.calories.setText(cal);
+        holder.date.setText(meal.date);
+        holder.mealType.setText(meal.mealType);
 
         new Thread(new Runnable() {
             @Override
@@ -92,6 +96,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
         private FrameLayout frameLayout;
         private TextView mealType;
         private TextView date;
+        private TextView calories;
 
 
         public SavedMealViewHolder(@NonNull View itemView) {
@@ -101,6 +106,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
             frameLayout = itemView.findViewById(R.id.MealItem);
             mealType = itemView.findViewById(R.id.textView4);
             date = itemView.findViewById(R.id.textView5);
+            calories = itemView.findViewById(R.id.textView6);
         }
     }
 }

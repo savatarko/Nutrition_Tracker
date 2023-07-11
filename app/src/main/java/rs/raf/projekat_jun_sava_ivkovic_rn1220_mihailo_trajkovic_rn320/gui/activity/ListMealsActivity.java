@@ -144,6 +144,7 @@ public class ListMealsActivity extends AppCompatActivity {
                 }
                 notifyAboutSwap();
                 loadData();
+                recyclerView.smoothScrollToPosition(0);
             }
             @Override
             public void onTabUnselected(TabLayout.Tab t){

@@ -40,6 +40,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         Meal meal = meals.get(position);
         holder.name.setText(meal.name);
+        String cal = meal.calories + " kcal";
+        holder.calories.setText(cal);
         //holder.img.setImageBitmap(meal.img);
 
         new Thread(new Runnable() {
@@ -89,6 +91,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         private FrameLayout frameLayout;
         private TextView mealType;
         private TextView date;
+        private TextView calories;
 
 
         public MealViewHolder(@NonNull View itemView) {
@@ -98,6 +101,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             frameLayout = itemView.findViewById(R.id.MealItem);
             mealType = itemView.findViewById(R.id.textView4);
             date = itemView.findViewById(R.id.textView5);
+            calories = itemView.findViewById(R.id.textView6);
         }
     }
 }

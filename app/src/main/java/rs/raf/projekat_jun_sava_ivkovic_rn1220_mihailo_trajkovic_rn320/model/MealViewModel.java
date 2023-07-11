@@ -51,7 +51,7 @@ public class MealViewModel extends AndroidViewModel {
 
     private void fetchMeals2(MealFilter mealFilter){
         List<Meal> mock = new ArrayList<>();
-        mock.add(new Meal(1,"asd","asd","asd","asd","asd",new ArrayList<>(),new ArrayList<>(),"asd","asd",0));
+        //mock.add(new Meal(1,"asd","asd","asd","asd","asd",new ArrayList<>(),new ArrayList<>(),"asd","asd",0));
         Disposable subscription =
                 mealRepository.fetchFiltered(mealFilter)
                 .startWith(Observable.just(mock))

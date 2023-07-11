@@ -9,6 +9,7 @@ import io.reactivex.Observable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -64,7 +65,7 @@ public class MealRepository {
         }
         for(MealJSON mealJSON : list) {
             if (mealFilter.isFromHome() == true) {
-                if (mealJSON.getName().toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || mealJSON.getIngredients().contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
+                if (mealJSON.getCategory().equalsIgnoreCase(mealFilter.getCategory()) && mealJSON.getName().toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || mealJSON.getIngredients().contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
                     meals.add(new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), mealJSON.getIngredients(), mealJSON.getMeasures(), mealJSON.getMealarea(), mealJSON.getVideolink(), 0));
                 }
             } else {
@@ -73,6 +74,11 @@ public class MealRepository {
                     meals.add(new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), mealJSON.getIngredients(), mealJSON.getMeasures(), mealJSON.getMealarea(), mealJSON.getVideolink(), 0));
                 }
             }
+        }
+        if(mealFilter.isSorted()){
+            meals = meals.stream().sorted((m1,m2)->{
+                return m1.name.compareTo(m2.name);
+            }).collect(Collectors.toList());
         }
         return Observable.just(meals);
     }

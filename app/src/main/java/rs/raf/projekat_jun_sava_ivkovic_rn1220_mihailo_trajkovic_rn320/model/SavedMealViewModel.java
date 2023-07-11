@@ -41,13 +41,15 @@ public class SavedMealViewModel extends AndroidViewModel {
     }
     public void fetchSavedMeals2(MealFilter mealFilter){
         List<SavedMeal> mock = new ArrayList<>();
-        mock.add(new SavedMeal());
+        //mock.add(new SavedMeal(0,"a","a","a","a","a","a","a",new ArrayList<>(),new ArrayList<>(),"a",new ArrayList<>(),1));
         Disposable subscription =
                 savedMealRepository.fetchFiltered(mealFilter)
                         .startWith(Observable.just(mock))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe();
+                        .subscribe(savedMeals->{
+                            this.savedMeals.setValue(new ArrayList<>(savedMeals));
+                        });
         subscriptions.add(subscription);
     }
 

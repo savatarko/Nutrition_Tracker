@@ -28,7 +28,7 @@ public class SavedMealRepository {
         List<SavedMeal> meals = savedMealDao.getAll();
         for (SavedMeal meal : meals) {
             if (mealFilter.isFromHome() == true) {
-                if (meal.name.toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || meal.ingredients.contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
+                if (meal.category.equalsIgnoreCase(mealFilter.getCategory()) && meal.name.toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || meal.ingredients.contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
                     meals.add(meal);
                 }
             } else {
@@ -37,6 +37,9 @@ public class SavedMealRepository {
                     meals.add(meal);
                 }
             }
+        }
+        if(mealFilter.isSorted()){
+            meals.sort((o1, o2) -> o1.name.compareTo(o2.name));
         }
         return Observable.just(meals);
     }
