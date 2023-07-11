@@ -84,7 +84,7 @@ public class ListMealsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String filter) {
-                searchfilter = filter;
+                mealFilter.setMealName(filter);
                 loadData();
                 return false;
             }
@@ -97,7 +97,7 @@ public class ListMealsActivity extends AppCompatActivity {
     }
 
     private void loadData(){
-        mealViewModel.fetchMeals();
+        mealViewModel.fetchMeals(mealFilter);
     }
 
 

@@ -41,19 +41,19 @@ public class MealViewModel extends AndroidViewModel {
         mealRepository = new MealRepository(application);
 //        meals = mealRepository.getAll();
         meals = new MutableLiveData<>();
-        fetchMeals();
+        //fetchMeals(new MealFilter());
     }
 
-    public void fetchMeals(){
-        Thread thread = new Thread(()->fetchMeals2());
+    public void fetchMeals(MealFilter mealFilter){
+        Thread thread = new Thread(()->fetchMeals2(mealFilter));
         thread.start();
     }
 
-    private void fetchMeals2(){
+    private void fetchMeals2(MealFilter mealFilter){
         List<Meal> mock = new ArrayList<>();
         mock.add(new Meal(1,"asd","asd","asd","asd","asd",new ArrayList<>(),new ArrayList<>(),"asd","asd",0));
         Disposable subscription =
-                mealRepository.fetchAll()
+                mealRepository.fetchFiltered(mealFilter)
                 .startWith(Observable.just(mock))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
