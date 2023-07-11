@@ -15,7 +15,7 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.User;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.UserDao;
 
-@androidx.room.Database(entities = {User.class, Category.class, Meal.class, SavedMeal.class}, version = 10)
+@androidx.room.Database(entities = {User.class, Category.class, Meal.class, SavedMeal.class}, version = 11)
 @TypeConverters({Meal.MealConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();

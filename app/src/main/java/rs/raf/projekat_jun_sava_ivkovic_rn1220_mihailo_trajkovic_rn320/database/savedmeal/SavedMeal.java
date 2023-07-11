@@ -18,6 +18,9 @@ public class SavedMeal {
     public String category;
     public String date;
     public String mealType; //dorucak rucak vecera uzina
+    public String area;
+    public List<String> tags;
+    public float calories;
 
     @ColumnInfo(name = "ingredients")
     public List<String> ingredients;
@@ -25,7 +28,7 @@ public class SavedMeal {
     @ColumnInfo(name = "measures")
     public List<String> measures;
 
-    public SavedMeal(int id, String name, String image, String instructions, String videolink, String category, String date, String mealType, List<String> ingredients, List<String> measures) {
+    public SavedMeal(int id, String name, String image, String instructions, String videolink, String category, String date, String mealType, List<String> ingredients, List<String> measures, String area, List<String> tags, float calories) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -36,6 +39,9 @@ public class SavedMeal {
         this.mealType = mealType;
         this.ingredients = ingredients;
         this.measures = measures;
+        this.area = area;
+        this.tags = tags;
+        this.calories = calories;
     }
 
     public SavedMeal() {

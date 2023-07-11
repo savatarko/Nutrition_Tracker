@@ -101,6 +101,7 @@ public class MealDetailsActivity extends AppCompatActivity {
         savebt.setOnClickListener(e->{
             Intent intent = new Intent(this, SaveMealActivity.class);
             intent.putExtra("mealid", mealid);
+            intent.putExtra("meal", (new Gson()).toJson(meal));
             startActivity(intent);
         });
 

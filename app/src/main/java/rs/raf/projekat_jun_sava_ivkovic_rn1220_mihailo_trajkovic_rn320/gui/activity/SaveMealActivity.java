@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -91,7 +93,7 @@ public class SaveMealActivity extends AppCompatActivity {
 
     private void initData(){
         AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-        Meal meal = db.mealDao().getById(id);
+        Meal meal = (new Gson()).fromJson(getIntent().getExtras().getString("meal"), Meal.class);
         nametv.setText(meal.name);
         new Thread(new Runnable() {
             @Override
@@ -173,7 +175,7 @@ public class SaveMealActivity extends AppCompatActivity {
 
         savebt.setOnClickListener(e->{
             SavedMeal savedMeal = new SavedMeal();
-            Meal cur = db.mealDao().getById(id);
+            Meal cur = (new Gson()).fromJson(getIntent().getExtras().getString("meal"), Meal.class);
             savedMeal.category = cur.category;
             savedMeal.name = cur.name;
             savedMeal.instructions = cur.instructions;

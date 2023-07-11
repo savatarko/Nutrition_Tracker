@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter.MealAdapter;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter.SavedMealAdapter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.calories.NutritionApiCall;
@@ -29,17 +32,24 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal.MealJSON;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealFilter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealViewModel;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.SavedMealViewModel;
 
 public class ListMealsActivity extends AppCompatActivity {
 
     private SearchView searchView;
     private RecyclerView recyclerView;
     private MealViewModel mealViewModel;
+    private SavedMealViewModel savedMealViewModel;
     private MealAdapter mealAdapter;
+    private SavedMealAdapter savedMealAdapter;
     private String category;
     private String searchfilter;
     private Button sortbt;
     private MealFilter mealFilter;
+
+    private TabLayout tabLayout;
+    private boolean saved = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,25 @@ public class ListMealsActivity extends AppCompatActivity {
         initView();
         loadData();
     }
+
+    private void notifyAboutSwap(){
+        if(!saved){
+            recyclerView.setAdapter(mealAdapter);
+
+            //mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
+            //mealViewModel.getMeals().observe(this, meals -> {
+            //    mealAdapter.setMeals(meals);
+            //});
+        }
+        else{
+            recyclerView.setAdapter(savedMealAdapter);
+
+            //savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
+            //savedMealViewModel.getMeals().observe(this, meals -> {
+            //    savedMealAdapter.setMeals(meals);
+            //});
+        }
+    }
     private void initView(){
         searchView = findViewById(R.id.mealSearchView);
         recyclerView = findViewById(R.id.mealRecyclerView);
@@ -67,12 +96,19 @@ public class ListMealsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
 
         mealAdapter = new MealAdapter();
+        savedMealAdapter = new SavedMealAdapter();
         recyclerView.setAdapter(mealAdapter);
 
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
         mealViewModel.getMeals().observe(this, meals -> {
             mealAdapter.setMeals(meals);
         });
+
+        savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
+        savedMealViewModel.getMeals().observe(this, meals -> {
+            savedMealAdapter.setMeals(meals);
+        });
+
         if(searchfilter!=null){
             searchView.setQuery(searchfilter, true);
         }
@@ -94,13 +130,38 @@ public class ListMealsActivity extends AppCompatActivity {
         sortbt.setOnClickListener(e->{
             mealAdapter.setMeals(new ArrayList<>());
         });
+
+        tabLayout = findViewById(R.id.tabLayout1);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab t){
+                String text = t.getText().toString();
+                if(text.equalsIgnoreCase("api")) {
+                    saved = false;
+                }
+                else{
+                    saved = true;
+                }
+                notifyAboutSwap();
+                loadData();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab t){
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab t){
+            }
+        });
     }
 
     private void loadData(){
-        mealViewModel.fetchMeals(mealFilter);
+        if(!saved)
+            mealViewModel.fetchMeals(mealFilter);
+        else savedMealViewModel.fetchSavedMeals(mealFilter);
     }
 
 
+    /*
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -109,7 +170,10 @@ public class ListMealsActivity extends AppCompatActivity {
         mealAdapter.setMeals(new ArrayList<>());
     }
 
-    /*
+
+     */
+
+
     private void loadFromDb(){
         List<Meal> meals = mealViewModel.getMealRepository().getAllList();
         for(int i =0;i<meals.size();i++){
@@ -122,7 +186,7 @@ public class ListMealsActivity extends AppCompatActivity {
     }
 
 
-     */
+
 
 
 }

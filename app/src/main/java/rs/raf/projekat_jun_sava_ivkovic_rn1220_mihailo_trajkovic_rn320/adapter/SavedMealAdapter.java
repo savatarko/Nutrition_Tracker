@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,23 +23,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
-import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.MealDetailsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.savedmeal.SavedMeal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.MealDetailsActivity;
 
-public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder>{
+public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.SavedMealViewHolder>{
 
-    private List<Meal> meals = new ArrayList<>();
+    private List<SavedMeal> meals = new ArrayList<>();
 
     @NonNull
     @Override
-    public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SavedMealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_item, parent, false);
-        return new MealViewHolder(view);
+        return new SavedMealViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        Meal meal = meals.get(position);
+    public void onBindViewHolder(@NonNull SavedMealViewHolder holder, int position) {
+        SavedMeal meal = meals.get(position);
         holder.name.setText(meal.name);
         //holder.img.setImageBitmap(meal.img);
 
@@ -46,11 +48,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             @Override
             public void run() {
                 try {
-                    HttpURLConnection con = (HttpURLConnection) new URL(meal.thumbnail).openConnection();
-                    con.connect();
-                    InputStream input = con.getInputStream();
-                    final Bitmap bm = BitmapFactory.decodeStream(input);
-                    holder.img.setImageBitmap(bm);
+                    File imgFile = new File(meal.image);
+                    if(imgFile.exists()) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        holder.img.setImageBitmap(myBitmap);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -58,6 +60,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         }).start();
 
 
+        //TODO: ovde treba da se popravi samo me mrzi sada
         holder.frameLayout.setOnClickListener(e->{
             Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
             intent.putExtra("mealid", meal.id);
@@ -66,12 +69,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         });
     }
 
-    public void setMeals(List<Meal> meals) {
+    public void setMeals(List<SavedMeal> meals) {
         this.meals = meals;
         notifyDataSetChanged();
     }
 
-    public void setMealsNoNotif(List<Meal> meals) {
+    public void setMealsNoNotif(List<SavedMeal> meals) {
         this.meals = meals;
     }
 
@@ -82,7 +85,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
 
 
-    class MealViewHolder extends RecyclerView.ViewHolder {
+     class SavedMealViewHolder extends RecyclerView.ViewHolder {
 
         private TextView name;
         private ImageView img;
@@ -91,7 +94,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         private TextView date;
 
 
-        public MealViewHolder(@NonNull View itemView) {
+        public SavedMealViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.textView2);
             img = itemView.findViewById(R.id.imageView);
