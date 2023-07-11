@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -38,6 +40,7 @@ public class MealDetailsActivity extends AppCompatActivity {
     private Button savebt;
 
     private int mealid;
+    private Meal meal;
     //private Meal meal;
 
     private MealDetailsViewModel mealDetailsViewModel;
@@ -47,13 +50,14 @@ public class MealDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_details);
         mealid = getIntent().getExtras().getInt("mealid");
+        meal = (new Gson()).fromJson(getIntent().getExtras().getString("meal"), Meal.class);
         //meal= (Meal) getIntent().getExtras().getSerializable("meal");
         initView();
     }
     private void initView(){
 
         mealDetailsViewModel = new ViewModelProvider(this, new MyViewModelFactory(this.getApplication(), mealid)).get(MealDetailsViewModel.class);
-
+        mealDetailsViewModel.setMeal(meal);
         ActivityMealDetailsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_meal_details);
         binding.setViewmodel(mealDetailsViewModel);
 
@@ -71,8 +75,6 @@ public class MealDetailsActivity extends AppCompatActivity {
         backbt = findViewById(R.id.button5);
         savebt = findViewById(R.id.button2);
 
-        AppDatabase db = AppDatabase.getInstance(this);
-        Meal meal = db.mealDao().getById(mealid);
         //mealName.setText(meal.name);
         mealCategory.setText(meal.category);
         mealArea.setText(meal.mealArea);

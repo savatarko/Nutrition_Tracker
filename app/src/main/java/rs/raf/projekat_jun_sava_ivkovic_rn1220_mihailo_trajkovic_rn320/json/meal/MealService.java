@@ -2,10 +2,8 @@ package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.mea
 
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
-import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.category.CategoryJSON;
 
-public interface MealAPICall {
+public interface MealService {
     /*
     @GET("filter.php?c=:{category}")
     Call<MealJSON.MealJSONWrapper> getMealsByCategory(@Path("category") String category);

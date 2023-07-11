@@ -23,7 +23,9 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter.MealAdapter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
-import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal.MealAPICall;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.calories.NutritionApiCall;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.calories.NutritionJSON;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal.MealService;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal.MealJSON;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealFilter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealViewModel;
@@ -93,50 +95,9 @@ public class ListMealsActivity extends AppCompatActivity {
             mealAdapter.setMeals(new ArrayList<>());
         });
     }
+
     private void loadData(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://www.themealdb.com/api/json/v1/1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        MealAPICall mealAPICall = retrofit.create(MealAPICall.class);
-        Call<MealJSON.MealJSONWrapper> call = mealAPICall.getAllMeals();
-        call.enqueue(new Callback<MealJSON.MealJSONWrapper>() {
-            @Override
-            public void onResponse(Call<MealJSON.MealJSONWrapper> call, Response<MealJSON.MealJSONWrapper> response) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Error loading categories", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                List<MealJSON> mealJSONList = null;
-                AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-                db.mealDao().deleteAll();
-                mealJSONList = response.body().getMeals();
-                for (MealJSON mealJSON : mealJSONList) {
-                    Log.d("TEST", "onResponse: " + mealJSON.getIngredients());
-                    Meal meal = new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), mealJSON.getIngredients(), mealJSON.getMeasures(), mealJSON.getMealarea(), mealJSON.getVideolink());
-                    if(mealFilter.isFromHome()==true){
-                        if(meal.name.toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || meal.ingredients.contains(mealFilter.getIngredient())){//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
-                            db.mealDao().insert(meal);
-                        }
-                    }
-                    else{
-                        if(meal.name.toLowerCase().contains(mealFilter.getMealName().toLowerCase()) && (mealFilter.getCategory().equals("") ||meal.category.equalsIgnoreCase(mealFilter.getCategory())) &&
-                                (mealFilter.getArea().equals("") ||meal.mealArea.equalsIgnoreCase(mealFilter.getArea())) && (mealFilter.getIngredient().equals("") || meal.ingredients.contains(mealFilter.getIngredient())) && (mealFilter.getTag().equals("") ||meal.tags.contains(mealFilter.getTag()))){
-                            db.mealDao().insert(meal);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealJSON.MealJSONWrapper> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Error loading meals", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        //List<Meal> meals = mealViewModel.getMealRepository().getAllByCategory(category);
-        //meals.remove(0);
-        //mealAdapter.setMeals(meals);
+        mealViewModel.fetchMeals();
     }
 
 
@@ -162,4 +123,6 @@ public class ListMealsActivity extends AppCompatActivity {
 
 
      */
+
+
 }

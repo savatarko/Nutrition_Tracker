@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -55,4 +55,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.7.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
     implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
 }

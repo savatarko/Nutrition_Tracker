@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.FilterFragment;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MainScreenFragment;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.StatsFragment;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -39,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
                     if (filterFragment == null || !filterFragment.isVisible()) {
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragmentContainerView2, new FilterFragment(), "filterFragment");
+                        transaction.commit();
+                    }
+                } else if (text.equalsIgnoreCase("stats")) {
+                    StatsFragment statsFragment = (StatsFragment) getSupportFragmentManager().findFragmentByTag("statsFragment");
+                    if (statsFragment == null || !statsFragment.isVisible()) {
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragmentContainerView2, new StatsFragment(), "statsFragment");
                         transaction.commit();
                     }
                 }

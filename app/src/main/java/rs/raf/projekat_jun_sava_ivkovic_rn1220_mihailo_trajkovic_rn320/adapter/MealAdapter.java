@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -59,6 +61,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         holder.frameLayout.setOnClickListener(e->{
             Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
             intent.putExtra("mealid", meal.id);
+            intent.putExtra("meal", (new Gson()).toJson(meal));
             holder.itemView.getContext().startActivity(intent);
         });
 

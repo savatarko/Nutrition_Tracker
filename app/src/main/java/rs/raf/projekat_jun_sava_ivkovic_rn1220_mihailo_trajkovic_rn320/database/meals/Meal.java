@@ -39,6 +39,10 @@ public class Meal {
     @ColumnInfo(name = "measures")
     public List<String> measures;
 
+
+    @ColumnInfo(name = "calories")
+    public float calories;
+
     @ColumnInfo(name = "videolink")
     public String videolink;
 
@@ -57,7 +61,7 @@ public class Meal {
         }
     }
 
-    public Meal(int id, String name, String thumbnail, String category, String tags, String instructions, List<String> ingredients, List<String> measures, String mealArea, String videolink) {
+    public Meal(int id, String name, String thumbnail, String category, String tags, String instructions, List<String> ingredients, List<String> measures, String mealArea, String videolink, float calories) {
         this.id=id;
         this.name = name;
         this.thumbnail = thumbnail;
@@ -67,6 +71,8 @@ public class Meal {
         this.ingredients = ingredients;
         this.measures = measures;
         this.mealArea = mealArea;
+        //this.videolink = videolink;
+        this.calories = calories;
     }
 
     public Meal() {
