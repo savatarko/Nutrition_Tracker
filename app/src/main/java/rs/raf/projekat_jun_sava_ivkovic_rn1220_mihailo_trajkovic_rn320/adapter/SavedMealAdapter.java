@@ -26,6 +26,7 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.savedmeal.SavedMeal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.MealDetailsActivity;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.helper.HelperFunctions;
 
 public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.SavedMealViewHolder>{
 
@@ -45,7 +46,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
         //holder.img.setImageBitmap(meal.img);
         String cal = meal.calories + " kcal";
         holder.calories.setText(cal);
-        holder.date.setText(meal.date);
+        holder.date.setText(HelperFunctions.formatDate(meal.date));
         holder.mealType.setText(meal.mealType);
 
         new Thread(new Runnable() {

@@ -32,26 +32,14 @@ public class SavedMealViewModel extends AndroidViewModel {
         //List<SavedMeal> list = db.savedMealDao().getAll();
         //savedMeals.setValue(list);
         savedMealRepository = new SavedMealRepository(application);
-        savedMeals = new MutableLiveData<>();
+        savedMeals.setValue(savedMealRepository.getAll());
     }
 
-    public void fetchSavedMeals(MealFilter mealFilter){
-        Thread thread = new Thread(()->fetchSavedMeals2(mealFilter));
-        thread.start();
+    public void getSavedMeals(MealFilter mealFilter){
+        savedMeals.setValue(savedMealRepository.getFiltered(mealFilter));
     }
-    public void fetchSavedMeals2(MealFilter mealFilter){
-        List<SavedMeal> mock = new ArrayList<>();
-        //mock.add(new SavedMeal(0,"a","a","a","a","a","a","a",new ArrayList<>(),new ArrayList<>(),"a",new ArrayList<>(),1));
-        Disposable subscription =
-                savedMealRepository.fetchFiltered(mealFilter)
-                        .startWith(Observable.just(mock))
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(savedMeals->{
-                            this.savedMeals.setValue(new ArrayList<>(savedMeals));
-                        });
-        subscriptions.add(subscription);
-    }
+
+
 
     public LiveData<List<SavedMeal>> getMeals() {
         return savedMeals;

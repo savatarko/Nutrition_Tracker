@@ -158,7 +158,7 @@ public class ListMealsActivity extends AppCompatActivity {
     private void loadData(){
         if(!saved)
             mealViewModel.fetchMeals(mealFilter);
-        else savedMealViewModel.fetchSavedMeals(mealFilter);
+        else savedMealViewModel.getSavedMeals(mealFilter);
     }
 
 

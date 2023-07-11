@@ -23,10 +23,14 @@ public class SavedMealRepository {
         savedMealDao = AppDatabase.getInstance(application).savedMealDao();
     }
 
-    public Observable<List<SavedMeal>> fetchFiltered(MealFilter mealFilter) {
-        List<MealJSON> list;
-        List<SavedMeal> meals = savedMealDao.getAll();
-        for (SavedMeal meal : meals) {
+    public List<SavedMeal> getAll(){
+        return savedMealDao.getAll();
+    }
+
+    public List<SavedMeal> getFiltered(MealFilter mealFilter) {
+        List<SavedMeal> list = savedMealDao.getAll();
+        List<SavedMeal> meals = new ArrayList<>();
+        for (SavedMeal meal : list) {
             if (mealFilter.isFromHome() == true) {
                 if (meal.category.equalsIgnoreCase(mealFilter.getCategory()) && meal.name.toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || meal.ingredients.contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
                     meals.add(meal);
@@ -41,6 +45,6 @@ public class SavedMealRepository {
         if(mealFilter.isSorted()){
             meals.sort((o1, o2) -> o1.name.compareTo(o2.name));
         }
-        return Observable.just(meals);
+        return meals;
     }
 }

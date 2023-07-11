@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class SavedMeal {
     public String instructions;
     public String videolink;
     public String category;
-    public String date;
+    public Date date;
     public String mealType; //dorucak rucak vecera uzina
     public String area;
     public List<String> tags;
@@ -28,7 +29,7 @@ public class SavedMeal {
     @ColumnInfo(name = "measures")
     public List<String> measures;
 
-    public SavedMeal(int id, String name, String image, String instructions, String videolink, String category, String date, String mealType, List<String> ingredients, List<String> measures, String area, List<String> tags, float calories) {
+    public SavedMeal(int id, String name, String image, String instructions, String videolink, String category, Date date, String mealType, List<String> ingredients, List<String> measures, String area, List<String> tags, float calories) {
         this.id = id;
         this.name = name;
         this.image = image;

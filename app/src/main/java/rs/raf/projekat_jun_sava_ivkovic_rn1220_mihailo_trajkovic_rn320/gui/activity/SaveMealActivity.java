@@ -29,8 +29,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +41,7 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.savedmeal.SavedMeal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.helper.HelperFunctions;
 
 public class SaveMealActivity extends AppCompatActivity {
 
@@ -54,6 +58,7 @@ public class SaveMealActivity extends AppCompatActivity {
     private int id;
     int selected = 1;
 
+    Date date = new Date();
     private int pic_id;
     private Map<Integer, String> typemap = new HashMap<>();
 
@@ -180,10 +185,11 @@ public class SaveMealActivity extends AppCompatActivity {
             savedMeal.name = cur.name;
             savedMeal.instructions = cur.instructions;
             savedMeal.videolink = cur.videolink;
-            savedMeal.date = dateButton.getText().toString();
+            savedMeal.date = HelperFunctions.trimDate(this.date);
             savedMeal.mealType = typemap.get(selected);
             savedMeal.ingredients = cur.ingredients;
             savedMeal.measures = cur.measures;
+            savedMeal.calories = cur.calories;
             image.buildDrawingCache();
             savedMeal.image = saveToInternalStorage(image.getDrawingCache(),id);
             db.savedMealDao().insert(savedMeal);
@@ -259,15 +265,14 @@ public class SaveMealActivity extends AppCompatActivity {
 
     private void initDatePicker()
     {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day)
-            {
-                month = month + 1;
-                String date = makeDateString(day, month, year);
-                dateButton.setText(date);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            //month = month + 1;
+            Calendar cal = Calendar.getInstance();
+            cal.set(year, month, day);
+            date = cal.getTime();
+            //String date = makeDateString(day, month, year);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMM dd yyyy");
+            dateButton.setText(dtf.format(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));
         };
 
         Calendar cal = Calendar.getInstance();
