@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -101,7 +103,20 @@ public class ListMealsActivity extends AppCompatActivity {
 
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
         mealViewModel.getMeals().observe(this, meals -> {
+            Log.d("TEST", "initView: OBSERVER");
             mealAdapter.setMeals(meals);
+            for(int i=0;i<meals.size();i++){
+                int finalI = i;
+                Thread thread = new Thread(() -> {
+                    mealViewModel.fetchCalories(meals.get(finalI));
+
+                    runOnUiThread(()->mealAdapter.notifyItemChanged(finalI));
+                    //meals.add(meals.get(finalI));
+                });
+                thread.start();
+
+
+            }
         });
 
         savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
@@ -190,4 +205,4 @@ public class ListMealsActivity extends AppCompatActivity {
 
 
 
-}
+    }

@@ -25,6 +25,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter.MealAdapter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.MealRepository;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.calories.NutritionApiCall;
@@ -60,18 +61,14 @@ public class MealViewModel extends AndroidViewModel {
                 .subscribe(
                         meals -> {
                             this.meals.setValue(new ArrayList<>(meals));
-                            for(Meal meal : this.meals.getValue()){
-                                fetchCalories(meal);
-                            }
                         }
                 );
         subscriptions.add(subscription);
+
     }
 
-    private void fetchCalories(Meal meal){
-        Thread thread = new Thread(()-> meal.calories = fetchCalories2(meal));
-        thread.start();
-            //meals.postValue(meals.getValue());
+    public void fetchCalories(Meal meal){
+        meal.calories = fetchCalories2(meal);
     }
     public MealRepository getMealRepository() {
         return mealRepository;
