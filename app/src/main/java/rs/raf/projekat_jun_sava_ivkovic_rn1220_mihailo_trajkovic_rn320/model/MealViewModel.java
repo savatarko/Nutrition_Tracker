@@ -30,10 +30,12 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.MealRepository;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.calories.NutritionApiCall;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.calories.NutritionJSON;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.wrapper.MealSuccess;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.wrapper.MealWrapper;
 
 public class MealViewModel extends AndroidViewModel {
     private MealRepository mealRepository;
-    private MutableLiveData<List<Meal>> meals;
+    private MutableLiveData<MealWrapper> meals;
 
     private CompositeDisposable subscriptions = new CompositeDisposable();
 
@@ -60,7 +62,7 @@ public class MealViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals -> {
-                            this.meals.setValue(new ArrayList<>(meals));
+                            this.meals.setValue(new MealSuccess(meals));
                         }
                 );
         subscriptions.add(subscription);
@@ -73,7 +75,7 @@ public class MealViewModel extends AndroidViewModel {
     public MealRepository getMealRepository() {
         return mealRepository;
     }
-    public LiveData<List<Meal>> getMeals() {
+    public LiveData<MealWrapper> getMeals() {
         return meals;
     }
 

@@ -10,6 +10,9 @@ public class MealFilter implements Serializable {
     private String tag = "";
     private boolean sorted = false;
     private boolean fromHome = false;
+    private int mincal = -1;
+    private int maxcal = -1;
+    private boolean calsort = false;
 
     public boolean isFromHome() {
         return fromHome;
@@ -77,5 +80,29 @@ public class MealFilter implements Serializable {
 
     public void setSorted(boolean sorted) {
         this.sorted = sorted;
+    }
+
+    public int getMincal() {
+        return mincal;
+    }
+
+    public void setMincal(int mincal) {
+        this.mincal = mincal;
+    }
+
+    public int getMaxcal() {
+        return maxcal;
+    }
+
+    public void setMaxcal(int maxcal) {
+        this.maxcal = maxcal;
+    }
+
+    public boolean isCalsort() {
+        return calsort;
+    }
+
+    public void setCalsort(boolean calsort) {
+        this.calsort = calsort;
     }
 }

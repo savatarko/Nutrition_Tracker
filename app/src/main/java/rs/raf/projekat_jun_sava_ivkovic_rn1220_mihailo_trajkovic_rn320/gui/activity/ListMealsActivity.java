@@ -8,9 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -35,6 +38,7 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealFilter;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealViewModel;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.SavedMealViewModel;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.wrapper.MealSuccess;
 
 public class ListMealsActivity extends AppCompatActivity {
 
@@ -48,10 +52,11 @@ public class ListMealsActivity extends AppCompatActivity {
     private String searchfilter;
     private Button sortbt;
     private MealFilter mealFilter;
+    private EditText mincal;
+    private EditText maxcal;
 
     private TabLayout tabLayout;
     private boolean saved = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +81,9 @@ public class ListMealsActivity extends AppCompatActivity {
     private void notifyAboutSwap(){
         if(!saved){
             recyclerView.setAdapter(mealAdapter);
-
-            //mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
-            //mealViewModel.getMeals().observe(this, meals -> {
-            //    mealAdapter.setMeals(meals);
-            //});
         }
         else{
             recyclerView.setAdapter(savedMealAdapter);
-
-            //savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
-            //savedMealViewModel.getMeals().observe(this, meals -> {
-            //    savedMealAdapter.setMeals(meals);
-            //});
         }
     }
     private void initView(){
@@ -104,19 +99,23 @@ public class ListMealsActivity extends AppCompatActivity {
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);
         mealViewModel.getMeals().observe(this, meals -> {
             Log.d("TEST", "initView: OBSERVER");
-            mealAdapter.setMeals(meals);
+            if(meals instanceof MealSuccess)
+                mealAdapter.setMeals(((MealSuccess) meals).meals);
+
+            /*
             for(int i=0;i<meals.size();i++){
                 int finalI = i;
                 Thread thread = new Thread(() -> {
                     mealViewModel.fetchCalories(meals.get(finalI));
-
                     runOnUiThread(()->mealAdapter.notifyItemChanged(finalI));
                     //meals.add(meals.get(finalI));
                 });
                 thread.start();
-
-
             }
+
+             */
+
+
         });
 
         savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
@@ -143,7 +142,8 @@ public class ListMealsActivity extends AppCompatActivity {
 
         sortbt = findViewById(R.id.button3);
         sortbt.setOnClickListener(e->{
-            mealAdapter.setMeals(new ArrayList<>());
+            mealFilter.setCalsort(!mealFilter.isCalsort());
+            loadData();
         });
 
         tabLayout = findViewById(R.id.tabLayout1);
@@ -166,6 +166,49 @@ public class ListMealsActivity extends AppCompatActivity {
             }
             @Override
             public void onTabReselected(TabLayout.Tab t){
+            }
+        });
+        mincal = findViewById(R.id.calorieLowerBound);
+        maxcal = findViewById(R.id.calorieUpperBound);
+
+        mincal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(mincal.getText().toString().equalsIgnoreCase("")){
+                    mealFilter.setMincal(-1);
+                }
+                else mealFilter.setMincal(Integer.parseInt(mincal.getText().toString()));
+                loadData();
+            }
+        });
+
+        maxcal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(maxcal.getText().toString().equalsIgnoreCase("")){
+                    mealFilter.setMaxcal(-1);
+                }
+                else mealFilter.setMaxcal(Integer.parseInt(maxcal.getText().toString()));
+                loadData();
             }
         });
     }
