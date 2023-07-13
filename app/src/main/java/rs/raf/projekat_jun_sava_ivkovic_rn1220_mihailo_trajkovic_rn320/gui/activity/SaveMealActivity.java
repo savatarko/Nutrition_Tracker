@@ -62,6 +62,9 @@ public class SaveMealActivity extends AppCompatActivity {
     private int pic_id;
     private Map<Integer, String> typemap = new HashMap<>();
 
+    private Meal meal;
+    private boolean imageSet = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -98,22 +101,21 @@ public class SaveMealActivity extends AppCompatActivity {
 
     private void initData(){
         AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-        Meal meal = (new Gson()).fromJson(getIntent().getExtras().getString("meal"), Meal.class);
+        this.meal = (new Gson()).fromJson(getIntent().getExtras().getString("meal"), Meal.class);
         nametv.setText(meal.name);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        if(!imageSet)
+            new Thread(() -> {
                 try {
                     HttpURLConnection con = (HttpURLConnection) new URL(meal.thumbnail).openConnection();
                     con.connect();
                     InputStream input = con.getInputStream();
                     final Bitmap bm = BitmapFactory.decodeStream(input);
                     image.setImageBitmap(bm);
+                    imageSet = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        }).start();
+            }).start();
         breakfastbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,6 +236,7 @@ public class SaveMealActivity extends AppCompatActivity {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             // Set the image in imageview for display
             image.setImageBitmap(photo);
+            //saveToInternalStorage(photo,meal.id);
         }
     }
 
