@@ -197,6 +197,9 @@ public class SaveMealActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Meal saved", Toast.LENGTH_SHORT).show();
             finish();
         });
+        cancelbt.setOnClickListener(e->{
+            finish();
+        });
     }
 
     private String saveToInternalStorage(Bitmap bitmapImage, int id){
