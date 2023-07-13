@@ -84,10 +84,6 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
 
         //TODO: ovde treba da se popravi samo me mrzi sada
         holder.frameLayout.setOnClickListener(e->{
-            Intent intent = new Intent(holder.itemView.getContext(), ChangeSavedMealActivity.class);
-            intent.putExtra("mealid", meal.id);
-            intent.putExtra("meal", (new Gson()).toJson(meal));
-            holder.itemView.getContext().startActivity(intent);
             if(addMeal)
             {
                 AppModule.getInstance().getMealPlanViewModel().addMeal(meal);
