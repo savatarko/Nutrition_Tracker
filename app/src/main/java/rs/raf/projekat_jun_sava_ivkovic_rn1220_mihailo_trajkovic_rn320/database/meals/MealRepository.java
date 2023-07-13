@@ -83,7 +83,7 @@ public class MealRepository {
                 }
             } else {
                 if (mealJSON.getName().toLowerCase().contains(mealFilter.getMealName().toLowerCase()) && (mealFilter.getCategory().equals("") || mealJSON.getCategory().equalsIgnoreCase(mealFilter.getCategory())) &&
-                        (mealFilter.getArea().equals("") || mealJSON.getMealarea().equalsIgnoreCase(mealFilter.getArea())) && (mealFilter.getIngredient().equals("") || mealJSON.getIngredients().contains(mealFilter.getIngredient())) && (mealFilter.getTag().equals("") || mealJSON.getTags().contains(mealFilter.getTag()))) {
+                        (mealFilter.getArea().equals("") || mealJSON.getMealarea().equalsIgnoreCase(mealFilter.getArea())) && (mealFilter.getIngredient().equals("") || checkIngredients(mealJSON, mealFilter.getIngredient())) && (mealFilter.getTag().equals("") || mealJSON.getTags().contains(mealFilter.getTag()))) {
                     //float calories = fetchCalories2(mealJSON);
                     float calories = 0;
                     for(int i = 0;i<mealJSON.getIngredients().size();i++){
@@ -104,6 +104,9 @@ public class MealRepository {
                 return Float.compare(m1.calories,m2.calories);
             }).collect(Collectors.toList());
         }
+        if(meals.size() ==0){
+            return Observable.just(meals);
+        }
         mealFilter.setIndex(Math.max(0, mealFilter.getIndex()));
         int startindex = mealFilter.getIndex()* mealFilter.getMaxperpage();
         if(startindex>=meals.size()){
@@ -113,6 +116,14 @@ public class MealRepository {
         int endindex = (mealFilter.getIndex() + 1)* mealFilter.getMaxperpage();
         endindex = Math.min(endindex, meals.size());
         return Observable.just(meals.subList(startindex, endindex));
+    }
+
+    private boolean checkIngredients(MealJSON meal, String ingredient){
+        for(String s : meal.getIngredients()){
+            if(s.toLowerCase().contains(ingredient))
+                return true;
+        }
+        return false;
     }
 
     private float fetchCalories2(MealJSON meal){

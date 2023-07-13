@@ -101,7 +101,6 @@ public class FilterFragment extends Fragment {
 
         showbt.setOnClickListener(e->{
             MealFilter mealFilter = new MealFilter();
-            mealFilter.setCategory(spinner.getSelectedItem().toString());
             mealFilter.setMealName(name.getText().toString());
             mealFilter.setTag(tags.getText().toString());
             mealFilter.setSorted(sortedcb.isChecked());

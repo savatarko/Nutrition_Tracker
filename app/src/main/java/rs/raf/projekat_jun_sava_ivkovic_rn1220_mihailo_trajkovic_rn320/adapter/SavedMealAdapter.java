@@ -25,6 +25,7 @@ import java.util.List;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.savedmeal.SavedMeal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.ChangeSavedMealActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.MealDetailsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.helper.HelperFunctions;
 
@@ -67,7 +68,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
 
         //TODO: ovde treba da se popravi samo me mrzi sada
         holder.frameLayout.setOnClickListener(e->{
-            Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
+            Intent intent = new Intent(holder.itemView.getContext(), ChangeSavedMealActivity.class);
             intent.putExtra("mealid", meal.id);
             intent.putExtra("meal", (new Gson()).toJson(meal));
             holder.itemView.getContext().startActivity(intent);

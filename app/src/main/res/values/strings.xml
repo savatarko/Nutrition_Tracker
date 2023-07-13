@@ -43,6 +43,7 @@
     <string name="calories">Calories</string>
     <string name="prev">prev</string>
     <string name="next">next</string>
+    <string name="delete">Delete</string>
     <string-array name="spinner">
         <item>Category</item>
         <item>Area</item>
