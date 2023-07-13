@@ -76,6 +76,17 @@ public class MealDetailsActivity extends AppCompatActivity {
         mealRecipe.setText(meal.instructions);
         tags.setText(meal.tags);
 
+        if(meal.videolink == null || meal.videolink.equals("")){
+            video.setText("No video");
+        }
+
+        String ingredients = "";
+        for(String s : meal.ingredients){
+            ingredients += s + ", ";
+        }
+        ingredients = ingredients.substring(0, ingredients.length()-2);
+        mealIngredients.setText(ingredients);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
