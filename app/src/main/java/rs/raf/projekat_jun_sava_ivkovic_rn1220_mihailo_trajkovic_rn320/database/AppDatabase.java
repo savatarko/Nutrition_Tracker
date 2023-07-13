@@ -6,6 +6,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.calories.Ingredient;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.calories.IngredientDao;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.category.CategoryDao;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.category.Category;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
@@ -16,13 +18,14 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.UserDao;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.helper.DateConverter;
 
-@androidx.room.Database(entities = {User.class, Category.class, Meal.class, SavedMeal.class}, version = 12)
+@androidx.room.Database(entities = {User.class, Category.class, Meal.class, SavedMeal.class, Ingredient.class}, version = 17)
 @TypeConverters({Meal.MealConverter.class, DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract CategoryDao categoryDao();
     public abstract MealDao mealDao();
     public abstract SavedMealDao savedMealDao();
+    public abstract IngredientDao ingredientDao();
 
     private static AppDatabase instance;
 
