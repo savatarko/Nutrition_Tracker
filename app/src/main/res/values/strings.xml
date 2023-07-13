@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320</string>
+    <string name="app_name">Nutrition tracker</string>
     <string name="Title">Nutrition Tracker</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -9,6 +9,11 @@
     <string name="wrong_pass_format">Password has to be at least 4 characters, have at least 1 digit and i uppercase, and cant contain special characters.</string>
     <string name="wrong_pass">"Wrong password."</string>
     <string name="account_not_found">Wrong username or password.</string>
+
+    <string name="home">Home</string>
+    <string name="filter">Filter</string>
+    <string name="stats">Stats</string>
+    <string name="meal_plan">Meal plan</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="placeholder">placeholder</string>
@@ -31,7 +36,6 @@
     <string name="category">Category</string>
     <string name="area">Area</string>
     <string name="ingredient">Ingredient</string>
-    <string name="filter">filter</string>
     <string name="show_sorted">Show sorted</string>
     <string name="pagination">pagination</string>
     <string name="tags">Tags</string>
@@ -44,6 +48,12 @@
     <string name="prev">prev</string>
     <string name="next">next</string>
     <string name="delete">Delete</string>
+    <string name="email">Email</string>
+    <string name="enter_email">Enter email</string>
+    <string name="send">Send</string>
+    <string name="send2">Send</string>
+
+
     <string-array name="spinner">
         <item>Category</item>
         <item>Area</item>

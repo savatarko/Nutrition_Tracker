@@ -1,5 +1,6 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -41,10 +42,12 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
     private List<SavedMeal> meals = new ArrayList<>();
 
     private boolean addMeal = false;
+    private Activity activity;
 
-    public SavedMealAdapter(boolean addMeal) {
+    public SavedMealAdapter(boolean addMeal, Activity activity) {
         super();
         this.addMeal = addMeal;
+        this.activity = activity;
     }
 
     @NonNull
@@ -83,7 +86,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
             if(addMeal)
             {
                 AppModule.getInstance().getMealPlanViewModel().addMeal(meal);
-
+                activity.finish();
             }
             else {
                 Intent intent = new Intent(holder.itemView.getContext(), ChangeSavedMealActivity.class);

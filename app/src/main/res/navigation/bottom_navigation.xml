@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@+id/navigation_home">
+
+
+<fragment
+        android:id="@+id/navigation_home"
+        android:name="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MainScreenFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_main_screen" />
+
+    <fragment
+        android:id="@+id/navigation_filter"
+        android:name="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.FilterFragment"
+        android:label="@string/filter"
+        tools:layout="@layout/fragment_filter" />
+    <fragment
+        android:id="@+id/navigation_stats"
+        android:name="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.StatsFragment"
+        android:label="@string/stats"
+        tools:layout="@layout/fragment_stats" />
+    <fragment
+        android:id="@+id/navigation_meal_plan"
+        android:name="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MealPlanFragment"
+        android:label="@string/meal_plan"
+        tools:layout="@layout/fragment_meal_plan" />
+</navigation>

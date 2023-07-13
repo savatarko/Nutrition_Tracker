@@ -55,4 +55,68 @@ public class MealForPlan {
                 ", mealName=" + mealName +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public String getVideolink() {
+        return videolink;
+    }
+
+    public void setVideolink(String videolink) {
+        this.videolink = videolink;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<String> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<String> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<String> getMeasures() {
+        return measures;
+    }
+
+    public void setMeasures(List<String> measures) {
+        this.measures = measures;
+    }
+
+    public MealName getMealName() {
+        return mealName;
+    }
+
+    public void setMealName(MealName mealName) {
+        this.mealName = mealName;
+    }
 }

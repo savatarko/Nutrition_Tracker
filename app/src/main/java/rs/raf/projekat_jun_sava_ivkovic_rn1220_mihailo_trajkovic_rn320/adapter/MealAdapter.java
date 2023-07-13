@@ -1,5 +1,6 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.AppModule;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.MealDetailsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
@@ -30,10 +32,12 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     private List<Meal> meals = new ArrayList<>();
     private boolean addMeal = false;
 
+    private Activity activity;
 
-    public MealAdapter(boolean addMeal) {
+    public MealAdapter(boolean addMeal, Activity activity) {
         super();
         this.addMeal = addMeal;
+        this.activity = activity;
     }
     @NonNull
     @Override
@@ -65,10 +69,17 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
 
         holder.frameLayout.setOnClickListener(e->{
-            Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
-            intent.putExtra("mealid", meal.id);
-            intent.putExtra("meal", (new Gson()).toJson(meal));
-            holder.itemView.getContext().startActivity(intent);
+            if(addMeal)
+            {
+                AppModule.getInstance().getMealPlanViewModel().addMeal(meal);
+                activity.finish();
+            }
+            else {
+                Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
+                intent.putExtra("mealid", meal.id);
+                intent.putExtra("meal", (new Gson()).toJson(meal));
+                holder.itemView.getContext().startActivity(intent);
+            }
         });
     }
 

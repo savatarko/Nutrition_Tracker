@@ -103,8 +103,8 @@ public class ListMealsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
 
-        mealAdapter = new MealAdapter(addMeal);
-        savedMealAdapter = new SavedMealAdapter(addMeal);
+        mealAdapter = new MealAdapter(addMeal, this);
+        savedMealAdapter = new SavedMealAdapter(addMeal, this);
         recyclerView.setAdapter(mealAdapter);
 
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);

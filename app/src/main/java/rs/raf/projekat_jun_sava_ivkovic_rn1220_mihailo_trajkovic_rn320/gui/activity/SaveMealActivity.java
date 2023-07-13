@@ -185,6 +185,7 @@ public class SaveMealActivity extends AppCompatActivity {
             savedMeal.name = cur.name;
             savedMeal.instructions = cur.instructions;
             savedMeal.videolink = cur.videolink;
+            savedMeal.area = cur.mealArea;
             savedMeal.date = HelperFunctions.trimDate(this.date);
             savedMeal.mealType = typemap.get(selected);
             savedMeal.ingredients = cur.ingredients;

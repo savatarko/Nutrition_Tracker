@@ -4,10 +4,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.tabs.TabLayout;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.databinding.ActivityMainBinding;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.FilterFragment;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MainScreenFragment;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MealPlanFragment;
@@ -18,58 +29,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
+        initNavigation();
     }
-    private void initView(){
-        tabLayout = findViewById(R.id.tabLayout);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+    private void initNavigation() {
 
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                String text = tab.getText().toString();
-                if (text.equalsIgnoreCase("home")) {
-                    MainScreenFragment mainScreenFragment = (MainScreenFragment) getSupportFragmentManager().findFragmentByTag("mainScreenFragment");
-                    if (mainScreenFragment == null || !mainScreenFragment.isVisible()) {
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragmentContainerView2, new MainScreenFragment(), "mainScreenFragment");
-                        transaction.commit();
-                    }
-                } else if (text.equalsIgnoreCase("filter")) {
-                    FilterFragment filterFragment = (FilterFragment) getSupportFragmentManager().findFragmentByTag("filterFragment");
-                    if (filterFragment == null || !filterFragment.isVisible()) {
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragmentContainerView2, new FilterFragment(), "filterFragment");
-                        transaction.commit();
-                    }
-                } else if (text.equalsIgnoreCase("stats")) {
-                    StatsFragment statsFragment = (StatsFragment) getSupportFragmentManager().findFragmentByTag("statsFragment");
-                    if (statsFragment == null || !statsFragment.isVisible()) {
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragmentContainerView2, new StatsFragment(), "statsFragment");
-                        transaction.commit();
-                    }
-                }
-                else if (text.equalsIgnoreCase("meal plan")) {
-                    MealPlanFragment mealPlanFragment = (MealPlanFragment) getSupportFragmentManager().findFragmentByTag("mealPlanFragment");
-                    if (mealPlanFragment == null || !mealPlanFragment.isVisible()) {
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.fragmentContainerView2, new MealPlanFragment(), "mealPlanFragment");
-                        transaction.commit();
-                    }
-                }
-            }
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+        BottomNavigationView navView = findViewById(R.id.bottomNavigation);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_filter, R.id.navigation_stats, R.id.navigation_meal_plan)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 }

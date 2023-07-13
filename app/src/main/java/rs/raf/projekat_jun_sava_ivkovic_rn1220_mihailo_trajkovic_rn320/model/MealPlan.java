@@ -24,4 +24,17 @@ public class MealPlan {
         mealPlan.get(day).put(mealName, mealForPlan);
     }
 
+    public List<MealForPlan> getMeals(){
+        List<MealForPlan> meals = new ArrayList<>();
+        for(int i = 0; i < 7; i++) {
+            for(MealName mealName : MealName.values()) {
+                MealForPlan mealForPlan = mealPlan.get(i).get(mealName);
+                if(mealForPlan != null) {
+                    meals.add(mealForPlan);
+                }
+            }
+        }
+        return meals;
+    }
+
 }
