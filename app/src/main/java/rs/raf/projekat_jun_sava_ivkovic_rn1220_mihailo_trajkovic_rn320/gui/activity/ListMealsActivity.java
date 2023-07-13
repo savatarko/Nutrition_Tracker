@@ -12,8 +12,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -21,6 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +64,8 @@ public class ListMealsActivity extends AppCompatActivity {
     private boolean saved = false;
 
     private boolean addMeal = false;
+
+    private GifImageView tmpiv;
 
 
     @Override
@@ -109,6 +114,7 @@ public class ListMealsActivity extends AppCompatActivity {
             Log.d("TEST", "initView: OBSERVER");
             if(meals instanceof MealSuccess)
                 mealAdapter.setMeals(((MealSuccess) meals).meals);
+            tmpiv.setVisibility(View.GONE);
 
             /*
             for(int i=0;i<meals.size();i++){
@@ -129,6 +135,7 @@ public class ListMealsActivity extends AppCompatActivity {
         savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
         savedMealViewModel.getMeals().observe(this, meals -> {
             savedMealAdapter.setMeals(meals);
+            tmpiv.setVisibility(View.GONE);
         });
 
         if(searchfilter!=null){
@@ -233,9 +240,13 @@ public class ListMealsActivity extends AppCompatActivity {
             mealAdapter.notifyDataSetChanged();
             recyclerView.smoothScrollToPosition(0);
         });
+
+        tmpiv = findViewById(R.id.imageView4);
+        //tmpiv.setVisibility(View.GONE);
     }
 
     private void loadData(){
+        tmpiv.setVisibility(View.VISIBLE);
         if(!saved)
             mealViewModel.fetchMeals(mealFilter);
         else savedMealViewModel.getSavedMeals(mealFilter);

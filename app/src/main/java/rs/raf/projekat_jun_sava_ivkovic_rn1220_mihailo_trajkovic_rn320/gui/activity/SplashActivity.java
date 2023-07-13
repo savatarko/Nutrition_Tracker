@@ -18,10 +18,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.calories.IngredientRepository;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.User;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.category.CategoryAPICall;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.category.CategoryJSON;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.category.Category;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal.MealJSON;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal.MealService;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -30,6 +34,35 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         loadCategories();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MealService remoteDataSource;
+                IngredientRepository ingredientRepository = new IngredientRepository(getApplication());
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://www.themealdb.com/api/json/v1/1/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                remoteDataSource = retrofit.create(MealService.class);
+                List<MealJSON> answer;
+                try{
+                    answer = remoteDataSource.getAllMeals().execute().body().getMeals();
+                }
+                catch (Exception e){
+                    return;
+                }
+                for(MealJSON mealJSON : answer){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i=0;i<mealJSON.getIngredients().size();i++){
+                                ingredientRepository.getCalories(mealJSON.getIngredients().get(i), mealJSON.getMeasures().get(i));
+                            }
+                        }
+                    }).start();
+                }
+            }
+        }).start();
         if(!checkLogin())
             loadDatabase();
         else{

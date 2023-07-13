@@ -62,4 +62,6 @@ dependencies {
     // Rx
     implementation "io.reactivex.rxjava2:rxjava:2.2.9"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
 }
