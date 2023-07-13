@@ -48,8 +48,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         holder.name.setText(meal.name);
         String cal = meal.calories + " kcal";
         holder.calories.setText(cal);
-        //holder.img.setImageBitmap(meal.img);
-
         new Thread(new Runnable() {
             @Override
             public void run() {

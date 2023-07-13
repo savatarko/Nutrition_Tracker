@@ -79,10 +79,6 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
             }
         }).start();
 
-
-
-
-        //TODO: ovde treba da se popravi samo me mrzi sada
         holder.frameLayout.setOnClickListener(e->{
             if(addMeal)
             {

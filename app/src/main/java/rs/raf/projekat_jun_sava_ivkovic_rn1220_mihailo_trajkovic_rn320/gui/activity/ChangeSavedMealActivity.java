@@ -57,6 +57,7 @@ public class ChangeSavedMealActivity extends AppCompatActivity {
     Date date = new Date();
     private int pic_id;
     private Map<Integer, String> typemap = new HashMap<>();
+    private boolean haschangedimg = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,17 +101,7 @@ public class ChangeSavedMealActivity extends AppCompatActivity {
         }
         SavedMeal meal = db.savedMealDao().getById(id);
         nametv.setText(meal.name);
-        /*
-        try {
-                    File imgFile = new File(meal.image);
-                    if(imgFile.exists()) {
-                        Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                        holder.img.setImageBitmap(myBitmap);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-         */
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -207,6 +198,7 @@ public class ChangeSavedMealActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(camera_intent, pic_id);
+                            haschangedimg = true;
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -220,8 +212,10 @@ public class ChangeSavedMealActivity extends AppCompatActivity {
         savebt.setOnClickListener(e->{
             meal.date = HelperFunctions.trimDate(this.date);
             meal.mealType = typemap.get(selected);
-            image.buildDrawingCache();
-            meal.image = saveToInternalStorage(image.getDrawingCache(),id);
+            if(haschangedimg) {
+                image.buildDrawingCache();
+                meal.image = saveToInternalStorage(image.getDrawingCache(), id);
+            }
             db.savedMealDao().deleteById(meal.id);
             db.savedMealDao().insert(meal);
             Toast.makeText(getApplicationContext(), "Meal updated", Toast.LENGTH_SHORT).show();
@@ -240,7 +234,7 @@ public class ChangeSavedMealActivity extends AppCompatActivity {
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            // User cancelled the dialog
+
                         }
                     });
             builder.show();
@@ -270,7 +264,6 @@ public class ChangeSavedMealActivity extends AppCompatActivity {
         return mypath.getAbsolutePath();
     }
 
-    //TODO: nzm jel ovo radi, moram da proverim na pravom fonu
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Match the request 'pic id with requestCode

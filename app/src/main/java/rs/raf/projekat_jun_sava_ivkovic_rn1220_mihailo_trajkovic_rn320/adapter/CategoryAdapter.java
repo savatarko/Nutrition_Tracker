@@ -48,12 +48,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categories.get(position);
         holder.name.setText(category.getName());
         holder.button.setOnClickListener(e->{
-            /*
-            categories.remove(category);
-            Log.d("test123", "test");
-            setCategories(categories);
-
-             */
             AlertDialog.Builder test = new AlertDialog.Builder(holder.itemView.getContext());
             test.setTitle(category.getName());
             test.setMessage(category.getDesc());

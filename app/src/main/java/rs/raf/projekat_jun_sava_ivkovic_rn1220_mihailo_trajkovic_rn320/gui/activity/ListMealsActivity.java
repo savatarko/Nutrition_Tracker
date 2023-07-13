@@ -76,8 +76,6 @@ public class ListMealsActivity extends AppCompatActivity {
         if(extras==null){
             return;
         }
-        //category = extras.getString("category");
-        //searchfilter = extras.getString("filter");
         mealFilter = (MealFilter) extras.getSerializable("filter");
         addMeal = extras.getBoolean("addMeal");
         if(mealFilter!=null) {
@@ -116,21 +114,6 @@ public class ListMealsActivity extends AppCompatActivity {
                 mealAdapter.setMeals(((MealSuccess) meals).meals);
             if(!saved)
                 tmpiv.setVisibility(View.GONE);
-
-            /*
-            for(int i=0;i<meals.size();i++){
-                int finalI = i;
-                Thread thread = new Thread(() -> {
-                    mealViewModel.fetchCalories(meals.get(finalI));
-                    runOnUiThread(()->mealAdapter.notifyItemChanged(finalI));
-                    //meals.add(meals.get(finalI));
-                });
-                thread.start();
-            }
-
-             */
-
-
         });
 
         savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
@@ -253,34 +236,4 @@ public class ListMealsActivity extends AppCompatActivity {
             mealViewModel.fetchMeals(mealFilter);
         else savedMealViewModel.getSavedMeals(mealFilter);
     }
-
-
-    /*
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-        db.mealDao().deleteAll();
-        mealAdapter.setMeals(new ArrayList<>());
-    }
-
-
-     */
-
-
-    private void loadFromDb(){
-        List<Meal> meals = mealViewModel.getMealRepository().getAllList();
-        for(int i =0;i<meals.size();i++){
-            if(!meals.get(i).name.toLowerCase().contains(searchfilter.toLowerCase())){
-                meals.remove(i);
-                i--;
-            }
-        }
-        mealAdapter.setMeals(meals);
-    }
-
-
-
-
-
-    }
+}

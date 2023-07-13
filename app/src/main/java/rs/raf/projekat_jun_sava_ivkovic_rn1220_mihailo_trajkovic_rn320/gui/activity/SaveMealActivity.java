@@ -222,7 +222,6 @@ public class SaveMealActivity extends AppCompatActivity {
         return mypath.getAbsolutePath();
     }
 
-    //TODO: nzm jel ovo radi, moram da proverim na pravom fonu
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Match the request 'pic id with requestCode

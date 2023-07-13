@@ -41,7 +41,6 @@ public class MealDetailsActivity extends AppCompatActivity {
 
     private int mealid;
     private Meal meal;
-    //private Meal meal;
 
     private MealDetailsViewModel mealDetailsViewModel;
 
@@ -51,7 +50,6 @@ public class MealDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meal_details);
         mealid = getIntent().getExtras().getInt("mealid");
         meal = (new Gson()).fromJson(getIntent().getExtras().getString("meal"), Meal.class);
-        //meal= (Meal) getIntent().getExtras().getSerializable("meal");
         initView();
     }
     private void initView(){
@@ -63,8 +61,6 @@ public class MealDetailsActivity extends AppCompatActivity {
 
         binding.setLifecycleOwner(this);
 
-
-//        mealName = findViewById(R.id.tvMealName);
         mealCategory = findViewById(R.id.tvMealCategory);
         mealArea = findViewById(R.id.tvMealArea);
         mealRecipe = findViewById(R.id.tvMealRecipe);
@@ -75,12 +71,9 @@ public class MealDetailsActivity extends AppCompatActivity {
         backbt = findViewById(R.id.button5);
         savebt = findViewById(R.id.button2);
 
-        //mealName.setText(meal.name);
         mealCategory.setText(meal.category);
         mealArea.setText(meal.mealArea);
         mealRecipe.setText(meal.instructions);
-        //video.setText(meal.);
-        //mealIngredients.setText(meal.ingredients);
         tags.setText(meal.tags);
 
         new Thread(new Runnable() {
