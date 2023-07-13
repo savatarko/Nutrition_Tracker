@@ -114,7 +114,8 @@ public class ListMealsActivity extends AppCompatActivity {
             Log.d("TEST", "initView: OBSERVER");
             if(meals instanceof MealSuccess)
                 mealAdapter.setMeals(((MealSuccess) meals).meals);
-            tmpiv.setVisibility(View.GONE);
+            if(!saved)
+                tmpiv.setVisibility(View.GONE);
 
             /*
             for(int i=0;i<meals.size();i++){
@@ -135,7 +136,8 @@ public class ListMealsActivity extends AppCompatActivity {
         savedMealViewModel = new ViewModelProvider(this).get(SavedMealViewModel.class);
         savedMealViewModel.getMeals().observe(this, meals -> {
             savedMealAdapter.setMeals(meals);
-            tmpiv.setVisibility(View.GONE);
+            if(saved)
+                tmpiv.setVisibility(View.GONE);
         });
 
         if(searchfilter!=null){
