@@ -86,7 +86,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
 
             }
             else {
-                Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), ChangeSavedMealActivity.class);
                 intent.putExtra("mealid", meal.id);
                 intent.putExtra("meal", (new Gson()).toJson(meal));
                 holder.itemView.getContext().startActivity(intent);
