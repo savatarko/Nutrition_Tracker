@@ -56,6 +56,8 @@ public class ListMealsActivity extends AppCompatActivity {
     private EditText maxcal;
 
     private TabLayout tabLayout;
+    private Button prevbt;
+    private Button nextbt;
     private boolean saved = false;
 
     @Override
@@ -210,6 +212,20 @@ public class ListMealsActivity extends AppCompatActivity {
                 else mealFilter.setMaxcal(Integer.parseInt(maxcal.getText().toString()));
                 loadData();
             }
+        });
+        prevbt = findViewById(R.id.button12);
+        nextbt = findViewById(R.id.button13);
+        prevbt.setOnClickListener(e->{
+            mealFilter.setIndex(mealFilter.getIndex()-1);
+            loadData();
+            mealAdapter.notifyDataSetChanged();
+            recyclerView.smoothScrollToPosition(0);
+        });
+        nextbt.setOnClickListener(e->{
+            mealFilter.setIndex(mealFilter.getIndex()+1);
+            loadData();
+            mealAdapter.notifyDataSetChanged();
+            recyclerView.smoothScrollToPosition(0);
         });
     }
 

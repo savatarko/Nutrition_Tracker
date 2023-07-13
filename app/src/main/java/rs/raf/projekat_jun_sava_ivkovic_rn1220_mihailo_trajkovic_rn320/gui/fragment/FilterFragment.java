@@ -105,6 +105,9 @@ public class FilterFragment extends Fragment {
             mealFilter.setMealName(name.getText().toString());
             mealFilter.setTag(tags.getText().toString());
             mealFilter.setSorted(sortedcb.isChecked());
+            if(!pagination.getText().toString().equals("")){
+                mealFilter.setMaxperpage(Integer.parseInt(pagination.getText().toString()));
+            }
             String item = spinner.getSelectedItem().toString();
             if(item.equals("Category")){
                 mealFilter.setCategory(filtertext.getText().toString());

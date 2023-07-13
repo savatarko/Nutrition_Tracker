@@ -104,7 +104,15 @@ public class MealRepository {
                 return Float.compare(m1.calories,m2.calories);
             }).collect(Collectors.toList());
         }
-        return Observable.just(meals);
+        mealFilter.setIndex(Math.max(0, mealFilter.getIndex()));
+        int startindex = mealFilter.getIndex()* mealFilter.getMaxperpage();
+        if(startindex>=meals.size()){
+            mealFilter.setIndex(mealFilter.getIndex()-1);
+        }
+        startindex = mealFilter.getIndex()* mealFilter.getMaxperpage();
+        int endindex = (mealFilter.getIndex() + 1)* mealFilter.getMaxperpage();
+        endindex = Math.min(endindex, meals.size());
+        return Observable.just(meals.subList(startindex, endindex));
     }
 
     private float fetchCalories2(MealJSON meal){

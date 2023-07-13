@@ -13,6 +13,8 @@ public class MealFilter implements Serializable {
     private int mincal = -1;
     private int maxcal = -1;
     private boolean calsort = false;
+    private int index = 0;
+    private int maxperpage = 10;
 
     public boolean isFromHome() {
         return fromHome;
@@ -25,13 +27,14 @@ public class MealFilter implements Serializable {
     public MealFilter() {
     }
 
-    public MealFilter(String mealName, String category, String area, String ingredient, String tag, boolean sorted) {
+    public MealFilter(String mealName, String category, String area, String ingredient, String tag, boolean sorted, int maxperpage) {
         this.mealName = mealName;
         this.category = category;
         this.area = area;
         this.ingredient = ingredient;
         this.tag = tag;
         this.sorted = sorted;
+        this.maxperpage = maxperpage;
     }
 
     public String getMealName() {
@@ -104,5 +107,21 @@ public class MealFilter implements Serializable {
 
     public void setCalsort(boolean calsort) {
         this.calsort = calsort;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public int getMaxperpage() {
+        return maxperpage;
+    }
+
+    public void setMaxperpage(int maxperpage) {
+        this.maxperpage = maxperpage;
     }
 }
