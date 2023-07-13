@@ -59,7 +59,7 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
         SavedMeal meal = meals.get(position);
         holder.name.setText(meal.name);
         //holder.img.setImageBitmap(meal.img);
-        String cal = meal.calories + " kcal";
+        String cal = String.format("%.0f",meal.calories)+ " kcal";
         holder.calories.setText(cal);
         holder.date.setText(HelperFunctions.formatDate(meal.date));
         holder.mealType.setText(meal.mealType);
