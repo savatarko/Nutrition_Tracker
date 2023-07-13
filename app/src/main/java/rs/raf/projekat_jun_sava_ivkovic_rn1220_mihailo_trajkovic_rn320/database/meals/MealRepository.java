@@ -63,6 +63,12 @@ public class MealRepository {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        if(mealFilter == null) {
+            for (MealJSON mealJSON : list) {
+                meals.add(new Meal(Integer.parseInt(mealJSON.getId()), mealJSON.getName(), mealJSON.getThumbnail(), mealJSON.getCategory(), mealJSON.getTags(), mealJSON.getInstructions(), mealJSON.getIngredients(), mealJSON.getMeasures(), mealJSON.getMealarea(), mealJSON.getVideolink(), 0));
+            }
+            return Observable.just(meals);
+        }
         for(MealJSON mealJSON : list) {
             if (mealFilter.isFromHome() == true) {
                 if (mealJSON.getCategory().equalsIgnoreCase(mealFilter.getCategory()) && mealJSON.getName().toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || mealJSON.getIngredients().contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom

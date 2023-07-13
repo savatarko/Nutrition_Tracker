@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.FilterFragment;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MainScreenFragment;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MealPlanFragment;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.StatsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
                     if (statsFragment == null || !statsFragment.isVisible()) {
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.fragmentContainerView2, new StatsFragment(), "statsFragment");
+                        transaction.commit();
+                    }
+                }
+                else if (text.equalsIgnoreCase("meal plan")) {
+                    MealPlanFragment mealPlanFragment = (MealPlanFragment) getSupportFragmentManager().findFragmentByTag("mealPlanFragment");
+                    if (mealPlanFragment == null || !mealPlanFragment.isVisible()) {
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.fragmentContainerView2, new MealPlanFragment(), "mealPlanFragment");
                         transaction.commit();
                     }
                 }

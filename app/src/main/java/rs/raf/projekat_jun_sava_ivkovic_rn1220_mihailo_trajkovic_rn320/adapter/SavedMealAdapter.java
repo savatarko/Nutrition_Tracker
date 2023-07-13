@@ -1,5 +1,7 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.adapter;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -22,15 +25,26 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.AppModule;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals.Meal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.savedmeal.SavedMeal;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.MealDetailsActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.helper.HelperFunctions;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealForPlan;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealPlanViewModel;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealViewModel;
 
 public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.SavedMealViewHolder>{
 
     private List<SavedMeal> meals = new ArrayList<>();
+
+    private boolean addMeal = false;
+
+    public SavedMealAdapter(boolean addMeal) {
+        super();
+        this.addMeal = addMeal;
+    }
 
     @NonNull
     @Override
@@ -65,12 +79,21 @@ public class SavedMealAdapter extends RecyclerView.Adapter<SavedMealAdapter.Save
         }).start();
 
 
+
+
         //TODO: ovde treba da se popravi samo me mrzi sada
         holder.frameLayout.setOnClickListener(e->{
-            Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
-            intent.putExtra("mealid", meal.id);
-            intent.putExtra("meal", (new Gson()).toJson(meal));
-            holder.itemView.getContext().startActivity(intent);
+            if(addMeal)
+            {
+                AppModule.getInstance().getMealPlanViewModel().addMeal(meal);
+
+            }
+            else {
+                Intent intent = new Intent(holder.itemView.getContext(), MealDetailsActivity.class);
+                intent.putExtra("mealid", meal.id);
+                intent.putExtra("meal", (new Gson()).toJson(meal));
+                holder.itemView.getContext().startActivity(intent);
+            }
         });
     }
 

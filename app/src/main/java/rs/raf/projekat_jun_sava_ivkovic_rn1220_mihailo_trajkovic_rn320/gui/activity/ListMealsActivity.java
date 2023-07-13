@@ -52,6 +52,8 @@ public class ListMealsActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private boolean saved = false;
 
+    private boolean addMeal = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +66,11 @@ public class ListMealsActivity extends AppCompatActivity {
         //category = extras.getString("category");
         //searchfilter = extras.getString("filter");
         mealFilter = (MealFilter) extras.getSerializable("filter");
-        category = mealFilter.getCategory();
-        searchfilter = mealFilter.getMealName();
+        addMeal = extras.getBoolean("addMeal");
+        if(mealFilter!=null) {
+            category = mealFilter.getCategory();
+            searchfilter = mealFilter.getMealName();
+        }
         init(category);
     }
     private void init(String category){
@@ -97,8 +102,8 @@ public class ListMealsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(false);
 
-        mealAdapter = new MealAdapter();
-        savedMealAdapter = new SavedMealAdapter();
+        mealAdapter = new MealAdapter(addMeal);
+        savedMealAdapter = new SavedMealAdapter(addMeal);
         recyclerView.setAdapter(mealAdapter);
 
         mealViewModel = new ViewModelProvider(this).get(MealViewModel.class);

@@ -28,7 +28,13 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder>{
 
     private List<Meal> meals = new ArrayList<>();
+    private boolean addMeal = false;
 
+
+    public MealAdapter(boolean addMeal) {
+        super();
+        this.addMeal = addMeal;
+    }
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -93,6 +93,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             mealFilter.setCategory(category.getName());
             mealFilter.setFromHome(true);
             intent.putExtra("filter", mealFilter);
+            intent.putExtra("addMeal", false);
             holder.itemView.getContext().startActivity(intent);
 
         });

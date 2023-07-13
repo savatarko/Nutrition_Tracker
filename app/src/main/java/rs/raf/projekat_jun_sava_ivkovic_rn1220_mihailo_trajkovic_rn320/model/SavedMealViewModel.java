@@ -36,7 +36,10 @@ public class SavedMealViewModel extends AndroidViewModel {
     }
 
     public void getSavedMeals(MealFilter mealFilter){
-        savedMeals.setValue(savedMealRepository.getFiltered(mealFilter));
+        if(mealFilter == null)
+            savedMeals.setValue(savedMealRepository.getAll());
+        else
+            savedMeals.setValue(savedMealRepository.getFiltered(mealFilter));
     }
 
 
