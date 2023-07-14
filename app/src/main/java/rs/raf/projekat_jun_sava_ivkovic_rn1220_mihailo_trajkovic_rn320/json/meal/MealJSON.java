@@ -219,7 +219,21 @@ public class MealJSON {
     public List<String> getMeasures(){
         List<String> measures = new ArrayList<>(Arrays.asList(measure1, measure2, measure3, measure4, measure5, measure6, measure7, measure8, measure9, measure10, measure11, measure12, measure13, measure14, measure15, measure16, measure17, measure18, measure19, measure20));
         //remove empty strings from measures
-        measures.removeIf(s -> s == null || s.isEmpty() || s.equals(" "));
+        measures.removeIf(s -> s == null); // || s.isEmpty() || s.equals(" "));
         return measures;
+    }
+
+    @Override
+    public String toString() {
+        return "MealJSON{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", thumbnail='" + thumbnail + '\'' +
+                ", mealarea='" + mealarea + '\'' +
+                ", tags='" + tags + '\'' +
+                ", instructions='" + instructions + '\'' +
+                ", videolink='" + videolink + '\'' +
+                '}';
     }
 }

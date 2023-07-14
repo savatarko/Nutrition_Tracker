@@ -15,4 +15,7 @@ public interface MealService {
 
     @GET("search.php?s=")
     Call<MealJSON.MealJSONWrapper> getAllMeals();
+
+    @GET("lookup.php")
+    Call<MealJSON.MealJSONWrapper> getMealById(@Query("i") String id);
 }

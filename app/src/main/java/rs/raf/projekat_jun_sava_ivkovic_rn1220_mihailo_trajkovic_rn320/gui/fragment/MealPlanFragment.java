@@ -114,6 +114,7 @@ public class MealPlanFragment extends Fragment {
 
         Button btnSend = new Button(getContext());
         btnSend.setText(R.string.send);
+        btnSend.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         btnSend.setOnClickListener(v->{
             String email = etEmail.getText().toString();
             /*if(!HelperFunctions.isValidEmail(email)) {

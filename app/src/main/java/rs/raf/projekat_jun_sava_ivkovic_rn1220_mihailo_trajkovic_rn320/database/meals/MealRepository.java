@@ -1,6 +1,7 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.meals;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -9,6 +10,8 @@ import io.reactivex.Observable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -66,9 +69,17 @@ public class MealRepository {
         List<MealJSON> list;
         List<Meal> meals = new ArrayList<>();
         try {
-            /*if(mealFilter!=null && mealFilter.getCategory()!=null)
+            /*if (mealFilter != null && mealFilter.getCategory() != null){
                 list = remoteDataSource.getMealsByCategory(mealFilter.getCategory()).execute().body().getMeals();
-            else*/
+                List<MealJSON> list2 = new ArrayList<>();
+                ExecutorService executorService = Executors.newFixedThreadPool(list.size());
+                for(MealJSON mealJSON: list) {
+                    //Log.d("TEST", "fetchFiltered: " + remoteDataSource.getMealById(mealJSON.getId()).execute().body().toString());
+                    executorService.submit(()->list2.add(remoteDataSource.getMealById(mealJSON.getId()).execute().body().getMeals().get(0)));
+                }
+                executorService.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS);
+                list = list2;
+            }else*/
                 list = remoteDataSource.getAllMeals().execute().body().getMeals();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -80,9 +91,9 @@ public class MealRepository {
             return Observable.just(meals);
         }
         for(MealJSON mealJSON : list) {
+            Log.d("TEST", "fetchFiltered: "+ mealJSON);
             if (mealFilter.isFromHome() == true) {
-                if (mealJSON.getCategory().equalsIgnoreCase(mealFilter.getCategory()) && mealJSON.getName().toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || mealJSON.getIngredients().contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom
-                    //float calories = fetchCalories2(mealJSON);
+                if (mealJSON.getCategory().equalsIgnoreCase(mealFilter.getCategory()) && mealJSON.getName().toLowerCase().contains(mealFilter.getMealName().toLowerCase()) || mealJSON.getIngredients().contains(mealFilter.getIngredient())) {//TODO: ovo trenutno radi samo za jedan sastojak+sastojci jos nisu ni dodati zbog jsona, ovo u filture razdvojiti zarezom                    //float calories = fetchCalories2(mealJSON);
                     float calories = 0;
                     for(int i = 0;i<mealJSON.getIngredients().size();i++){
                         calories+=ingredientRepository.getCalories(mealJSON.getIngredients().get(i), mealJSON.getMeasures().get(i));
