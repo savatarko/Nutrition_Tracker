@@ -1,8 +1,11 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment;
 
+import static java.lang.Thread.sleep;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,19 +24,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.net.URLEncoder;
+
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.AppModule;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
@@ -52,6 +62,8 @@ public class MealPlanFragment extends Fragment {
 
     MealPlanViewModel viewModel;
 
+    boolean flag = false;
+
     public MealPlanFragment() {
         // Required empty public constructor
     }
@@ -62,22 +74,17 @@ public class MealPlanFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("TEST", "onCreate: STATS");
+        Log.d("TEST", "onCreate: PLAN");
 
         if (AppModule.getInstance().getMealPlanViewModel() != null) {
+            Log.d("TEST", "onCreate: PLAN NOT NULL " + AppModule.getInstance().getMealPlanViewModel().getMealPlan().getValue().getMeals().size());
             viewModel = AppModule.getInstance().getMealPlanViewModel();
             MealPlan mealPlan = viewModel.getMealPlan().getValue();
-            for (int i = 0; i < 7; i++) {
-                for (MealName mealName : MealName.values()) {
-                    MealForPlan meal = mealPlan.getMeal(i, mealName);
-                    if (meal != null) {
-                        LinearLayout layout = mealsLayouts.get(i).get(mealName);
-                        generateViewForChosenMeal(layout, meal);
-                    }
-                }
-            }
+            regenerateLayouts();
+
         }
         else {
+            Log.d("TEST", "onCreate: PLAN NULL");
             viewModel = new MealPlanViewModel();
             AppModule.getInstance().setMealPlanViewModel(viewModel);
         }
@@ -93,10 +100,7 @@ public class MealPlanFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.mealPlanLayout);
-        TextView textView = new TextView(getContext());
-        textView.setText("Hello World");
-        layout.addView(textView);
+        LinearLayout layout = view.findViewById(R.id.mealPlanLayout);
         mealsLayouts = new ArrayList<>();
         for(int i=1;i<8;i++) {
             mealsLayouts.add(new HashMap<>());
@@ -116,11 +120,19 @@ public class MealPlanFragment extends Fragment {
                 etEmail.setError("Invalid email");
                 return;
             }*/
+
+            String link = "https://www.nutrition-tracker.rs/mealplan?data=1";
+            try {
+                link = "https://www.nutrition-tracker.rs/mealplan?data="+ URLEncoder.encode(new Gson().toJson(viewModel.getMealPlan().getValue()), StandardCharsets.UTF_8.toString());
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("message/rfc822");
             intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
             intent.putExtra(Intent.EXTRA_SUBJECT, "Meal plan");
-            intent.putExtra(Intent.EXTRA_TEXT, "Meal plan for this week");
+            intent.putExtra(Intent.EXTRA_TEXT, viewModel.getMealPlan().getValue().parseForEmail() + link);
             startActivity(Intent.createChooser(intent, "Send Email"));
         });
 
@@ -134,7 +146,9 @@ public class MealPlanFragment extends Fragment {
     private void generateViewForDay(LinearLayout layout, int day) {
         DateFormatSymbols symbols = new DateFormatSymbols();
         TextView textView = new TextView(getContext());
-        textView.setText(symbols.getWeekdays()[(day%7)+1]);
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        symbols.setWeekdays(new String[]{"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"});
+        textView.setText(symbols.getWeekdays()[day]);
         layout.addView(textView);
 
         LinearLayout dayLayout = new LinearLayout(getContext());
@@ -146,7 +160,7 @@ public class MealPlanFragment extends Fragment {
             generateViewForMeal(dayLayout, meal, day-1);
         }
 
-
+        dayLayout.setPadding(0, 0, 0, 30);
         layout.addView(dayLayout);
     }
 
@@ -171,9 +185,11 @@ public class MealPlanFragment extends Fragment {
         } else {
 
             AppCompatButton button = new AppCompatButton(getContext());
-            button.setText("Add");
+            button.setText("+");
+            button.setPadding(10, 10, 10, 10);
             button.setOnClickListener(v -> {
 
+                flag = true;
                 viewModel.setMealName(meal);
                 viewModel.setDay(day);
 
@@ -203,10 +219,12 @@ public class MealPlanFragment extends Fragment {
         if(imgFile.exists()) {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             imageView.setImageBitmap(myBitmap);
+            imageView.refreshDrawableState();
         }
         else {
             GetImages task = new GetImages(meal.getImage(), imageView,"meal");
             task.execute(meal.getImage());
+            imageView.refreshDrawableState();
         }
         //HelperFunctions.loadImage(imageView, meal.getImage());
         /*new Thread(() -> {
@@ -247,8 +265,34 @@ public class MealPlanFragment extends Fragment {
             LinearLayout layout = mealsLayouts.get(viewModel.getDay()).get(viewModel.getMealName());
             generateViewForChosenMeal(layout, mealForPlan);
         }
+        /*if(flag) {
+            flag = false;
+            return;
+        }*/
+        //this.onViewCreated(getView(), null);
+        if(mealsLayouts!=null) {
+            Log.d("TEST", "onResume: MEALS LAYOUT");
+            regenerateLayouts();
+        }
+        else{
+            Log.d("TEST", "onResume: MEALS LAYOUT NULL");
+        }
+
     }
 
+    void regenerateLayouts(){
+        if(mealsLayouts!=null) {
+            for (int i = 0; i < 7; i++) {
+                for (MealName mealName : MealName.values()) {
+                    MealForPlan meal = viewModel.getMealPlan().getValue().getMeal(i, mealName);
+                    if (meal != null) {
+                        LinearLayout layout = mealsLayouts.get(i).get(mealName);
+                        generateViewForChosenMeal(layout, meal);
+                    }
+                }
+            }
+        }
+    }
 
     private class GetImages extends AsyncTask<Object, Object, Object>
     {
@@ -284,6 +328,7 @@ public class MealPlanFragment extends Fragment {
         protected void onPostExecute(Object o)
         {
             view.setImageBitmap(bitmap);
+            view.refreshDrawableState();
         }
     }
 }

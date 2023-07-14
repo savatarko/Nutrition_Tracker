@@ -1,5 +1,9 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model;
 
+import android.graphics.Typeface;
+import android.widget.TextView;
+
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,23 @@ public class MealPlan {
             }
         }
         return meals;
+    }
+
+    public String parseForEmail(){
+        DateFormatSymbols symbols = new DateFormatSymbols();
+        symbols.setWeekdays(new String[]{"", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"});
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < 7; i++) {
+            sb.append(symbols.getWeekdays()[(i%7)+1] + "\n");
+            for(MealName mealName : MealName.values()) {
+                MealForPlan mealForPlan = mealPlan.get(i).get(mealName);
+                if(mealForPlan != null) {
+                    sb.append(mealName.toString() + ": " + mealForPlan.getName() + "\n");
+                }
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
 }

@@ -27,4 +27,9 @@
         android:name="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.MealPlanFragment"
         android:label="@string/meal_plan"
         tools:layout="@layout/fragment_meal_plan" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment.ProfileFragment"
+        android:label="@string/meal_plan"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

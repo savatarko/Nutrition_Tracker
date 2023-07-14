@@ -15,8 +15,42 @@ public class User {
     @ColumnInfo(name = "password")
     public String password;
 
+    @ColumnInfo(name = "height")
+    public int height;
+
+    @ColumnInfo(name = "weight")
+    public int weight;
+
+    @ColumnInfo(name = "age")
+    public int age;
+
+    @ColumnInfo(name = "sex")
+    public String sex;
+
+    @ColumnInfo(name = "physicalActivity")
+    public float physicalActivity;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.height = 180;
+        this.weight = 80;
+        this.age = 20;
+        this.sex = "Male";
+        this.physicalActivity = 1.2f;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", physicalActivity=" + physicalActivity +
+                '}';
     }
 }

@@ -14,6 +14,7 @@
     <string name="filter">Filter</string>
     <string name="stats">Stats</string>
     <string name="meal_plan">Meal plan</string>
+    <string name="profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="placeholder">placeholder</string>
@@ -53,6 +54,13 @@
     <string name="send">Send</string>
     <string name="send2">Send</string>
 
+    <string name="sex">Sex</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="age">Age</string>
+    <string name="physical_activity">Physical activity</string>
+
+    <string name="save_changes">Save changes</string>
 
     <string-array name="spinner">
         <item>Category</item>

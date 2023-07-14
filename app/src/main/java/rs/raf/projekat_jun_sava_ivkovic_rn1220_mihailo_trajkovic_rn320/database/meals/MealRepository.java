@@ -66,7 +66,10 @@ public class MealRepository {
         List<MealJSON> list;
         List<Meal> meals = new ArrayList<>();
         try {
-            list = remoteDataSource.getAllMeals().execute().body().getMeals();
+            /*if(mealFilter!=null && mealFilter.getCategory()!=null)
+                list = remoteDataSource.getMealsByCategory(mealFilter.getCategory()).execute().body().getMeals();
+            else*/
+                list = remoteDataSource.getAllMeals().execute().body().getMeals();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

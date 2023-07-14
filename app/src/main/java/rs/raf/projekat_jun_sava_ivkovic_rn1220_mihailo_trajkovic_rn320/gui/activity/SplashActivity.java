@@ -73,6 +73,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private boolean checkLogin(){
+//        return false;
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
         int id = sharedPreferences.getInt("login", -1);
         if(id!=-1){
@@ -85,13 +86,13 @@ public class SplashActivity extends AppCompatActivity {
         try {
             /*
             Adding a test user if he doesn't exist
-            username: test
+            username: Pera
             pass: Test123
              */
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-            User user = db.userDao().findUser("test","Test123");
+            User user = db.userDao().findUser("Pera","Test123");
             if(user==null){
-                db.userDao().insert(new User("test", "Test123"));
+                db.userDao().insert(new User("Pera", "Test123"));
             }
             //db.close();
 

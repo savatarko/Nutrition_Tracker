@@ -54,4 +54,8 @@ public class MealPlanViewModel {
         return this.mealName.getValue();
     }
 
+
+    public void setMealPlan(MealPlan mealPlan) {
+        this.mealPlan.setValue(mealPlan);
+    }
 }
