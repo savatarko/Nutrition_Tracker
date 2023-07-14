@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
+
 @Entity
 public class User {
     @PrimaryKey(autoGenerate = true)
@@ -52,5 +54,12 @@ public class User {
                 ", sex='" + sex + '\'' +
                 ", physicalActivity=" + physicalActivity +
                 '}';
+    }
+
+    public int dailyCaloriesLimit(){
+        if(Objects.equals(sex, "Male"))
+            return (int) (66.5 + (13.75 * weight) + (5.003 * height) - (6.755 * age)) * (int) physicalActivity;
+        else
+            return (int) (655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age)) * (int) physicalActivity;
     }
 }

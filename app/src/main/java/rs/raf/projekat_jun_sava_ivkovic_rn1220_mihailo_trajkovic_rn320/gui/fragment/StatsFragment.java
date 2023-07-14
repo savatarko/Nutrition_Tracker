@@ -1,5 +1,8 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.fragment;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -33,7 +36,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.savedmeal.SavedMeal;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.User;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.helper.HelperFunctions;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MealDetailsViewModel;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.MyViewModelFactory;
@@ -49,9 +54,11 @@ public class StatsFragment extends Fragment {
 
     // variable for our bar data set.
     BarDataSet barDataSet;
+    BarDataSet barDataSet2;
 
     // array list for storing entries.
     ArrayList barEntriesArrayList;
+    ArrayList barEntriesArrayList2;
 
     SavedMealViewModel savedMealViewModel;
 
@@ -125,9 +132,11 @@ public class StatsFragment extends Fragment {
         // below line is to set data
         // to our bar chart.
         barChart.setData(barData);
+        barChart.getLegend().setEnabled(false);
+
 
         // adding color to our bar data set.
-        barDataSet.setColors(new int[]{R.color.teal_700});
+        barDataSet.setColors(getResources().getColor(R.color.colorPrimaryDark));
 
         // setting text color.
         barDataSet.setValueTextColor(Color.BLACK);
@@ -147,23 +156,28 @@ public class StatsFragment extends Fragment {
     private void setChartForCalories(){
         getBarEntriesForCalories();
         barDataSet = new BarDataSet(barEntriesArrayList, getContext().getString(R.string.calories));
+        barDataSet2 = new BarDataSet(barEntriesArrayList2, null);
 
         // creating a new bar data and
         // passing our bar data set.
-        barData = new BarData(barDataSet);
+        barData = new BarData(barDataSet, barDataSet2);
 
         // below line is to set data
         // to our bar chart.
         barChart.setData(barData);
+        barChart.getLegend().setEnabled(false);
 
         // adding color to our bar data set.
-        barDataSet.setColors(new int[]{R.color.teal_700});
+        barDataSet.setColors(getResources().getColor(R.color.green, null));
+        barDataSet2.setColors(getResources().getColor(R.color.red, null));
 
         // setting text color.
         barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet2.setValueTextColor(Color.BLACK);
 
         // setting text size
         barDataSet.setValueTextSize(16f);
+        barDataSet2.setValueTextSize(16f);
 
         for(YAxis yAxis : new YAxis[]{barChart.getAxisLeft(), barChart.getAxisRight()}){
 //            yAxis.setDrawGridLines(false);
@@ -175,6 +189,7 @@ public class StatsFragment extends Fragment {
     }
 
     private void getBarEntriesForMealNumber() {
+        savedMealViewModel.getSavedMeals(null);
         // creating a new array list
         barEntriesArrayList = new ArrayList<>();
 
@@ -189,16 +204,25 @@ public class StatsFragment extends Fragment {
     }
 
     private void getBarEntriesForCalories() {
+
+        savedMealViewModel.getSavedMeals(null);
         // creating a new array list
         barEntriesArrayList = new ArrayList<>();
+        barEntriesArrayList2 = new ArrayList<>();
 
+        int limit = calculateDailyCaloriesLimit();
+        Log.d("TEST", "getBarEntriesForCalories: limit: " + limit);
 
         List<SavedMeal> savedMeals = savedMealViewModel.getMeals().getValue();
         for(int i=0;i<=6;i++) {
             LocalDateTime date = LocalDateTime.now().minus(i, ChronoUnit.DAYS); //.format(dtf);
             Calendar cal = Calendar.getInstance();
             cal.set(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
-            barEntriesArrayList.add(new BarEntry((float) 6-i, getCaloriesForDate(savedMeals, HelperFunctions.trimDate(cal.getTime()))));
+            int calories =  getCaloriesForDate(savedMeals, HelperFunctions.trimDate(cal.getTime()));
+            if(calories <= limit)
+                barEntriesArrayList.add(new BarEntry((float) 6-i, calories));
+            else
+                barEntriesArrayList2.add(new BarEntry((float) 6-i, calories));
         }
     }
 
@@ -209,6 +233,17 @@ public class StatsFragment extends Fragment {
 
     private int getCaloriesForDate(List<SavedMeal> meals, Date date){
         return meals.stream().filter(meal -> meal.date.equals(date)).mapToInt(meal -> (int) meal.calories).sum();
+    }
+
+    private int calculateDailyCaloriesLimit(){
+
+
+        Activity activity = getActivity();
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(activity.getPackageName(), Context.MODE_PRIVATE);
+        int id = sharedPreferences.getInt("login", -1);
+        AppDatabase db = AppDatabase.getInstance(activity.getApplicationContext());
+        User user = db.userDao().findUserById(id);
+        return user.dailyCaloriesLimit();
     }
 
 }

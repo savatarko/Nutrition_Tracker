@@ -2,6 +2,7 @@ package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.frag
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.R;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.AppDatabase;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.database.user.User;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.databinding.FragmentProfileBinding;
+import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity.LoginActivity;
 import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.ProfileViewModel;
 
 public class ProfileFragment extends Fragment {
@@ -61,6 +63,16 @@ public class ProfileFragment extends Fragment {
             Snackbar.make(binding.getRoot(), "User info updated", Snackbar.LENGTH_SHORT)
                     .setAction(null, null).show();  });
 
+        binding.btnLogout.setOnClickListener(v -> {
+            sharedPreferences
+                    .edit()
+                    .remove("login")
+                    .apply();
+            Intent mainIntent = new Intent(activity, LoginActivity.class);
+            this.startActivity(mainIntent);
+            activity.finish();
+
+        });
 
 
         View root = binding.getRoot();

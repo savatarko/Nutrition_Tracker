@@ -49,7 +49,12 @@ public class ProfileViewModel {
     }
 
     public void setHeight(String height) {
-        this.height.setValue(Integer.parseInt(height));
+        try {
+            this.height.setValue(Integer.parseInt(height));
+        }
+        catch (Exception e){
+            this.height.setValue(180);
+        }
     }
 
     public String getWeight() {

@@ -7,14 +7,15 @@
             name="viewmodel"
             type="rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.model.ProfileViewModel"/>
     </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".gui.fragment.ProfileFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,8 +81,34 @@
 
         </androidx.appcompat.widget.AppCompatButton>
 
-</LinearLayout></ScrollView>
+</LinearLayout>
+
+        <LinearLayout
+            android:layout_gravity="top|right"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/btnLogout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_logout"
+                android:scaleType="fitCenter"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="logout"
+                android:textSize="17sp"
+                android:layout_marginRight="5dp"
+                />
+
+        </LinearLayout>
+
 
 </FrameLayout>
-
+</ScrollView>
 </layout>

@@ -1,12 +1,19 @@
 package rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.gui.activity;
 
+import static java.lang.Thread.sleep;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
@@ -29,48 +36,65 @@ import rs.raf.projekat_jun_sava_ivkovic_rn1220_mihailo_trajkovic_rn320.json.meal
 
 public class SplashActivity extends AppCompatActivity {
 
+
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        loadCategories();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MealService remoteDataSource;
-                IngredientRepository ingredientRepository = new IngredientRepository(getApplication());
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://www.themealdb.com/api/json/v1/1/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                remoteDataSource = retrofit.create(MealService.class);
-                List<MealJSON> answer;
-                try{
-                    answer = remoteDataSource.getAllMeals().execute().body().getMeals();
-                }
-                catch (Exception e){
-                    return;
-                }
-                for(MealJSON mealJSON : answer){
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for(int i=0;i<mealJSON.getIngredients().size();i++){
-                                ingredientRepository.getCalories(mealJSON.getIngredients().get(i), mealJSON.getMeasures().get(i));
-                            }
+        new Thread(this::loadCategories).start();
+
+
+        new Thread(() -> {
+            MealService remoteDataSource;
+            IngredientRepository ingredientRepository = new IngredientRepository(getApplication());
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://www.themealdb.com/api/json/v1/1/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            remoteDataSource = retrofit.create(MealService.class);
+            List<MealJSON> answer;
+            try{
+                answer = remoteDataSource.getAllMeals().execute().body().getMeals();
+            }
+            catch (Exception e){
+                return;
+            }
+            for(MealJSON mealJSON : answer){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(int i=0;i<mealJSON.getIngredients().size();i++){
+                            ingredientRepository.getCalories(mealJSON.getIngredients().get(i), mealJSON.getMeasures().get(i));
                         }
-                    }).start();
-                }
+                    }
+                }).start();
             }
         }).start();
+
+/*
         if(!checkLogin())
             loadDatabase();
         else{
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-        }
-        finish();
+        }*/
+
+        Context context = this;
+        new Handler().postDelayed(() -> {
+
+            if(!checkLogin())
+                loadDatabase();
+            else{
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+            }
+
+        }, SPLASH_DISPLAY_LENGTH);
+        //finish();
     }
+
 
     private boolean checkLogin(){
 //        return false;
